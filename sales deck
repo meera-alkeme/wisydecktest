@@ -1,0 +1,3277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Wisy — From shelf to HQ</title>
+<link rel="stylesheet" href="colors_and_type.css" />
+<style>
+  /* -------- Deck scale (1920×1080) -------- */
+  :root {
+    --type-title:     112px;
+    --type-display:   96px;
+    --type-subtitle:  44px;
+    --type-h:         60px;
+    --type-body:      30px;
+    --type-body-l:    36px;
+    --type-small:     24px;
+    --type-mono:      20px;
+
+    --pad-top:    96px;
+    --pad-bottom: 96px;
+    --pad-x:      120px;
+    --gap-title:  56px;
+    --gap-item:   28px;
+  }
+
+  html, body { margin: 0; padding: 0; background: #000; font-family: var(--font-sans); color: var(--fg-1); }
+
+  deck-stage { background: var(--wisy-white); }
+
+  /* -------- Slide base -------- */
+  section {
+    box-sizing: border-box;
+    background: var(--wisy-white);
+    color: var(--fg-1);
+    overflow: hidden;
+    font-family: var(--font-sans);
+  }
+
+  /* Standard padded slide */
+  .slide-pad {
+    padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+  }
+
+  /* -------- Reusable text -------- */
+  .kicker {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-2);
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .kicker .dot {
+    width: 10px; height: 10px; border-radius: 999px;
+    background: var(--wisy-indigo);
+    display: inline-block;
+  }
+  .kicker.on-dark { color: var(--wisy-indigo-200); }
+  .kicker.on-dark .dot { background: var(--wisy-lime); }
+
+  .title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--type-title);
+    line-height: 0.97;
+    letter-spacing: -0.025em;
+    color: var(--fg-1);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .title .ink-indigo { color: var(--wisy-indigo); }
+  .title .ink-lime {
+    background: var(--wisy-lime);
+    padding: 0 14px 6px;
+    border-radius: 12px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .subtitle {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: var(--type-subtitle);
+    line-height: 1.18;
+    letter-spacing: -0.012em;
+    color: var(--fg-2);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: var(--type-body-l);
+    line-height: 1.45;
+    color: var(--fg-1);
+    margin: 0;
+  }
+  .body-s {
+    font-size: var(--type-body);
+    color: var(--fg-2);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  /* Pills / chips */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    height: 56px;
+    padding: 0 26px;
+    border-radius: 999px;
+    background: var(--wisy-indigo-100);
+    color: var(--wisy-indigo);
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .pill.lime { background: var(--wisy-lime); color: var(--wisy-black); }
+  .pill.ink  { background: var(--wisy-black); color: var(--wisy-white); }
+  .pill.outline { background: transparent; color: var(--wisy-black); border: 1.5px solid var(--wisy-black); }
+
+  /* Page chrome — slide number + brand */
+  .chrome {
+    position: absolute;
+    inset: auto 0 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--pad-x);
+    font-family: var(--font-mono);
+    font-size: 16px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    pointer-events: none;
+  }
+  .chrome.on-dark { color: rgba(255,255,255,0.55); }
+  .chrome .brand { display: inline-flex; align-items: center; gap: 12px; }
+  .chrome .brand .w {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    text-transform: lowercase;
+    color: var(--wisy-indigo);
+  }
+  .chrome.on-dark .brand .w { color: var(--wisy-white); }
+
+  /* ============================================================
+     SLIDE 1 — Title
+     ============================================================ */
+  .s-title {
+    position: relative;
+    height: 100%;
+    background: var(--wisy-white);
+    display: grid;
+    grid-template-columns: 1fr 720px;
+  }
+  .s-title__left {
+    padding: 96px var(--pad-x) 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    height: 100%;
+  }
+  .s-title__wordmark {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 200px;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: var(--wisy-indigo);
+    text-transform: lowercase;
+    margin: 24px 0 0;
+  }
+  .s-title__hook {
+    max-width: 920px;
+  }
+  .s-title__hook .t {
+    font-size: 76px;
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--wisy-black);
+    margin: 0 0 28px;
+    text-wrap: balance;
+  }
+  .s-title__hook .t em {
+    font-style: normal;
+    color: var(--wisy-indigo);
+  }
+  .s-title__hook .sub {
+    font-size: 26px;
+    color: var(--fg-2);
+    line-height: 1.4;
+    margin: 0;
+    max-width: 760px;
+  }
+  .s-title__meta {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    color: var(--fg-3);
+    font-family: var(--font-mono);
+    font-size: 24px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .s-title__meta span.bar { width: 32px; height: 1px; background: var(--fg-3); }
+
+  .s-title__right {
+    position: relative;
+    background: var(--wisy-indigo);
+    overflow: hidden;
+  }
+  .s-title__right::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 70% 30%, rgba(221,244,91,0.18), transparent 60%),
+      url("https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1600&q=80&auto=format&fit=crop") center/cover;
+    mix-blend-mode: luminosity;
+    opacity: 0.55;
+  }
+  .s-title__right::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(83,84,237,0.55) 0%, rgba(83,84,237,0.92) 100%);
+  }
+  .s-title__rightInner {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 72px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: var(--wisy-white);
+  }
+  .s-title__mark {
+    width: 84px; height: 84px;
+    border-radius: 20px;
+    background: var(--wisy-white);
+    display: grid; place-items: center;
+    font-family: var(--font-sans);
+    color: var(--wisy-indigo);
+    font-weight: 700;
+    font-size: 56px;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .s-title__statBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .s-title__stat {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 64px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--wisy-lime);
+    margin: 0;
+  }
+  .s-title__statLbl {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.35;
+    color: rgba(255,255,255,0.9);
+    max-width: 520px;
+    margin: 0;
+  }
+
+  /* ============================================================
+     SLIDE 2 — $1.7T
+     ============================================================ */
+  .s-stakes {
+    height: 100%;
+    box-sizing: border-box;
+    background: var(--wisy-black);
+    color: var(--wisy-white);
+    position: relative;
+    padding: 72px var(--pad-x) 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .s-stakes .kicker { color: var(--wisy-indigo-200); }
+  .s-stakes .kicker .dot { background: var(--wisy-lime); }
+
+  .s-stakes__hero {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 64px;
+    align-items: center;
+    flex: 1;
+    min-height: 0;
+  }
+  .s-stakes__number {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 300px;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    color: var(--wisy-lime);
+    margin: 0;
+  }
+  .s-stakes__number .unit { font-size: 200px; color: var(--wisy-white); letter-spacing: -0.02em; margin-left: 12px; }
+  .s-stakes__copy h2 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 56px;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--wisy-white);
+    margin: 0 0 24px;
+    text-wrap: balance;
+  }
+  .s-stakes__copy p {
+    font-size: 26px;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.78);
+    margin: 0;
+    max-width: 580px;
+  }
+  .s-stakes__row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 36px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    align-items: start;
+    flex-shrink: 0;
+  }
+  .s-stakes__cell .n {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--wisy-white);
+    margin: 0 0 12px;
+  }
+  .s-stakes__cell .n .accent { color: var(--wisy-lime); }
+  .s-stakes__cell .l {
+    font-family: var(--font-sans);
+    font-size: 24px;
+    line-height: 1.3;
+    color: rgba(255,255,255,0.78);
+    margin: 0;
+  }
+  .s-stakes__cell.quote {
+    padding: 4px 0 4px 22px;
+    border-left: 2px solid var(--wisy-lime);
+  }
+  .s-stakes__cell.quote .q {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 1.25;
+    color: var(--wisy-lime);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  /* ============================================================
+     SLIDE 3 — Ground reality
+     ============================================================ */
+  .s-ground {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+  }
+  .s-ground__photo {
+    position: relative;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.45) 100%),
+      url("https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1600&q=80&auto=format&fit=crop") center/cover;
+  }
+  .s-ground__rep {
+    position: absolute;
+    inset: auto 56px 56px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 18px;
+  }
+  .s-ground__rep .nameRow {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .s-ground__rep .avatar {
+    width: 64px; height: 64px;
+    border-radius: 999px;
+    background: var(--wisy-indigo);
+    color: var(--wisy-white);
+    display: grid; place-items: center;
+    font-weight: 600;
+    font-size: 24px;
+    border: 3px solid var(--wisy-white);
+  }
+  .s-ground__rep .name {
+    font-family: var(--font-sans);
+    color: var(--wisy-white);
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 1.2;
+  }
+  .s-ground__rep .name span {
+    display: block;
+    font-size: 20px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.85);
+    font-family: var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .s-ground__chips {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    max-width: 640px;
+  }
+  .s-ground__chips .c {
+    background: rgba(255,255,255,0.95);
+    color: var(--wisy-black);
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    backdrop-filter: blur(8px);
+  }
+  .s-ground__chips .c.warn { background: var(--wisy-lime); color: var(--wisy-black); }
+
+  .s-ground__right {
+    padding: 80px 96px 96px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    background: var(--wisy-white);
+    box-sizing: border-box;
+    height: 100%;
+  }
+  .s-ground__title h2 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 68px;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--wisy-black);
+    margin: 24px 0 0;
+    text-wrap: balance;
+  }
+  .s-ground__title h2 em { font-style: normal; color: var(--wisy-indigo); }
+
+  .s-ground__chaos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .s-ground__chaosRow {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--wisy-gray-50);
+    border-radius: 16px;
+    padding: 14px 20px;
+    border: 1px solid var(--border-1);
+  }
+  .s-ground__chaosRow .app {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: grid; place-items: center;
+    font-family: var(--font-mono); font-weight: 600;
+    color: var(--wisy-white);
+    font-size: 18px;
+  }
+  .s-ground__chaosRow .lbl {
+    font-size: 24px;
+    color: var(--fg-1);
+    font-weight: 500;
+  }
+  .s-ground__chaosRow .tag {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wisy-danger);
+  }
+
+  .s-ground__quote {
+    margin-top: auto;
+    padding-top: 28px;
+    border-top: 2px solid var(--wisy-black);
+    font-size: 26px;
+    line-height: 1.3;
+    color: var(--fg-1);
+    font-weight: 500;
+  }
+  .s-ground__quote em { font-style: normal; background: var(--wisy-lime); padding: 2px 10px 4px; border-radius: 8px; }
+
+  /* ============================================================
+     SLIDE 4 — AIR
+     ============================================================ */
+  .s-air {
+    height: 100%;
+    background: var(--wisy-white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .s-air__left {
+    padding: var(--pad-top) 80px var(--pad-bottom) var(--pad-x);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .s-air__brand {
+    display: flex; align-items: baseline; gap: 28px;
+    margin-top: 28px;
+  }
+  .s-air__brand .name {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 156px;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--wisy-indigo);
+  }
+  .s-air__brand .expand {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-2);
+    max-width: 220px;
+    line-height: 1.45;
+  }
+  .s-air__pitch {
+    font-size: 40px;
+    line-height: 1.15;
+    color: var(--fg-1);
+    margin: 32px 0 0;
+    max-width: 640px;
+    font-weight: 500;
+    text-wrap: balance;
+  }
+  .s-air__pitch em { font-style: normal; color: var(--wisy-indigo); }
+
+  .s-air__bars {
+    display: flex; flex-direction: column; gap: 22px;
+    margin-top: 32px;
+  }
+  .s-air__bar { }
+  .s-air__bar .row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .s-air__bar .row .l {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-2);
+  }
+  .s-air__bar .row .r {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--fg-1);
+  }
+  .s-air__bar .track {
+    height: 18px;
+    background: var(--wisy-gray-50);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+  .s-air__bar .fill {
+    height: 100%;
+    border-radius: 999px;
+  }
+  .s-air__bar.legacy .fill { width: 32%; background: var(--wisy-gray-500); }
+  .s-air__bar.air .fill {
+    width: 96%;
+    background: linear-gradient(90deg, var(--wisy-indigo) 0%, var(--wisy-indigo) 70%, var(--wisy-lime) 100%);
+  }
+  .s-air__caps {
+    display: flex; gap: 12px; margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .s-air__cap {
+    border: 1px solid var(--border-1);
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-2);
+  }
+
+  .s-air__right {
+    position: relative;
+    background:
+      linear-gradient(135deg, var(--wisy-indigo-100) 0%, var(--wisy-white) 100%);
+    overflow: hidden;
+  }
+  .s-air__right::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 50% 50%, rgba(83,84,237,0.10), transparent 55%);
+  }
+  /* Background grid */
+  .s-air__right::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(83,84,237,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(83,84,237,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
+  }
+
+  /* Device hub */
+  .s-air__hub {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+  .s-air__hubSvg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Center AIR core */
+  .s-air__core {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 240px; height: 240px;
+    border-radius: 999px;
+    background: var(--wisy-black);
+    color: var(--wisy-white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 30px 80px rgba(83,84,237,0.30), 0 0 0 8px rgba(83,84,237,0.08);
+    z-index: 3;
+    overflow: hidden;
+  }
+  .s-air__core::before,
+  .s-air__core::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    border: 2px solid var(--wisy-indigo);
+    opacity: 0;
+  }
+  [data-deck-active] .s-air__core::before { animation: airCoreRing 2600ms var(--ease-out) 200ms infinite; }
+  [data-deck-active] .s-air__core::after  { animation: airCoreRing 2600ms var(--ease-out) 1500ms infinite; }
+  @keyframes airCoreRing {
+    0%   { opacity: 0.7; transform: scale(1); }
+    100% { opacity: 0;   transform: scale(1.5); }
+  }
+  .s-air__coreLbl {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--wisy-indigo-200);
+  }
+  .s-air__coreMark {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 72px;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--wisy-lime);
+  }
+  .s-air__coreStatus {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wisy-lime);
+    margin-top: 4px;
+  }
+  .s-air__coreStatus .d {
+    width: 6px; height: 6px;
+    border-radius: 999px;
+    background: var(--wisy-lime);
+  }
+  [data-deck-active] .s-air__coreStatus .d {
+    animation: airBlink 1100ms steps(2, end) infinite;
+  }
+  @keyframes airBlink {
+    50% { opacity: 0.3; }
+  }
+
+  /* Device cards */
+  .s-air__dev {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 168px;
+    background: var(--wisy-white);
+    border: 1px solid var(--border-1);
+    border-radius: 18px;
+    padding: 14px 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    box-shadow: var(--shadow-sm);
+    z-index: 2;
+  }
+  [data-deck-active] .s-air__dev {
+    animation: airDevIn 540ms var(--ease-out) both;
+  }
+  [data-deck-active] .s-air__dev.d1 { animation-delay: 80ms; }
+  [data-deck-active] .s-air__dev.d2 { animation-delay: 200ms; }
+  [data-deck-active] .s-air__dev.d3 { animation-delay: 320ms; }
+  [data-deck-active] .s-air__dev.d4 { animation-delay: 440ms; }
+  [data-deck-active] .s-air__dev.d5 { animation-delay: 560ms; }
+  @keyframes airDevIn {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.86); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  .s-air__devIcon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: var(--wisy-indigo-100);
+    color: var(--wisy-indigo);
+    display: grid; place-items: center;
+    margin-top: 2px;
+  }
+  .s-air__devIcon svg { width: 32px; height: 32px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .s-air__devLbl {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--fg-1);
+    line-height: 1.1;
+  }
+  .s-air__devMeta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    line-height: 1.3;
+  }
+  .s-air__devOnline {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wisy-success);
+    font-weight: 600;
+  }
+  .s-air__devOnline .d {
+    width: 5px; height: 5px;
+    border-radius: 999px;
+    background: var(--wisy-success);
+  }
+  [data-deck-active] .s-air__devOnline .d {
+    animation: airDevDot 1600ms ease-out infinite;
+  }
+  [data-deck-active] .s-air__dev.d2 .s-air__devOnline .d { animation-delay: -200ms; }
+  [data-deck-active] .s-air__dev.d3 .s-air__devOnline .d { animation-delay: -400ms; }
+  [data-deck-active] .s-air__dev.d4 .s-air__devOnline .d { animation-delay: -600ms; }
+  [data-deck-active] .s-air__dev.d5 .s-air__devOnline .d { animation-delay: -800ms; }
+  @keyframes airDevDot {
+    0%   { box-shadow: 0 0 0 0 rgba(31,138,91,0.5); }
+    70%  { box-shadow: 0 0 0 8px rgba(31,138,91,0); }
+    100% { box-shadow: 0 0 0 0 rgba(31,138,91,0); }
+  }
+
+  /* SVG connection lines + traveling pulses */
+  .s-air__hubPath {
+    fill: none;
+    stroke: rgba(83,84,237,0.22);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .s-air__hubPathLive {
+    fill: none;
+    stroke: var(--wisy-indigo);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 4 10;
+    vector-effect: non-scaling-stroke;
+  }
+  [data-deck-active] .s-air__hubPathLive {
+    animation: airDash 1400ms linear infinite;
+  }
+  @keyframes airDash {
+    to { stroke-dashoffset: -140; }
+  }
+
+  /* Caption strip at bottom of right panel */
+  .s-air__caption {
+    position: absolute;
+    left: 56px; right: 56px; bottom: 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 20px;
+    background: var(--wisy-white);
+    border: 1px solid var(--border-1);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    z-index: 4;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-2);
+  }
+  .s-air__caption .lbl {
+    color: var(--wisy-indigo);
+    font-weight: 600;
+  }
+  .s-air__caption .v {
+    color: var(--wisy-black);
+    font-weight: 600;
+  }
+  .s-air__caption em {
+    font-style: normal;
+    color: var(--wisy-lime-700);
+  }
+
+  /* ============================================================
+     SLIDE 5 — AI Agents
+     ============================================================ */
+  .s-agents {
+    height: 100%;
+    box-sizing: border-box;
+    background: var(--wisy-indigo-100);
+    padding: 72px var(--pad-x) 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .s-agents__head {
+    display: grid; grid-template-columns: 1fr 600px;
+    gap: 80px;
+    align-items: end;
+  }
+  .s-agents__head h2 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 64px;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--wisy-black);
+    margin: 20px 0 0;
+    text-wrap: balance;
+  }
+  .s-agents__head h2 em { font-style: normal; color: var(--wisy-indigo); }
+  .s-agents__head p {
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--fg-2);
+    margin: 0;
+  }
+
+  .s-agents__flow {
+    display: grid;
+    grid-template-columns: 340px 1fr 340px;
+    gap: 48px;
+    align-items: stretch;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .s-agents__phone {
+    position: relative;
+    width: 340px; height: 560px;
+    border-radius: 40px;
+    background: #000;
+    padding: 12px;
+    box-shadow: 0 30px 60px rgba(16,24,64,0.18);
+    margin: 0 auto;
+    align-self: center;
+    box-sizing: border-box;
+  }
+  .s-agents__phone::after {
+    content: ""; position: absolute; top: 22px; left: 50%; transform: translateX(-50%);
+    width: 110px; height: 26px; border-radius: 14px; background: #000; z-index: 2;
+  }
+  .s-agents__phoneScreen {
+    width: 100%; height: 100%;
+    border-radius: 32px;
+    background: linear-gradient(180deg, #f7f7fb 0%, white 100%);
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+    padding: 64px 18px 18px;
+    gap: 12px;
+  }
+  .s-agents__phoneHead {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 4px;
+  }
+  .s-agents__phoneHead .b {
+    background: var(--wisy-black); color: var(--wisy-white);
+    padding: 5px 10px; border-radius: 999px;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    font-weight: 600;
+  }
+  .s-agents__phoneHead .t {
+    font-family: var(--font-sans); font-weight: 600; font-size: 16px;
+    color: var(--fg-1);
+  }
+  .s-agents__photoCap {
+    height: 130px;
+    border-radius: 16px;
+    background: url("https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=80&auto=format&fit=crop") center/cover;
+    position: relative;
+    overflow: hidden;
+  }
+  .s-agents__photoCap .check {
+    position: absolute; right: 10px; bottom: 10px;
+    background: var(--wisy-lime); color: var(--wisy-black);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-family: var(--font-mono); font-size: 9px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .s-agents__phoneSub {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--fg-3);
+    margin-top: 4px;
+  }
+  .s-agents__action {
+    border: 1px solid var(--border-1);
+    border-radius: 14px;
+    padding: 10px 12px;
+    background: white;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .s-agents__action.top {
+    border: 1.5px solid var(--wisy-indigo);
+    background: var(--wisy-indigo-100);
+  }
+  .s-agents__action .ahdr {
+    display: flex; justify-content: space-between;
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--fg-3);
+  }
+  .s-agents__action .ahdr .pri { color: var(--wisy-indigo); font-weight: 600; }
+  .s-agents__action.top .ahdr .pri { color: var(--wisy-indigo); }
+  .s-agents__action .ttl {
+    font-family: var(--font-sans); font-weight: 600; font-size: 13px;
+    color: var(--fg-1); line-height: 1.25;
+  }
+  .s-agents__action .rev {
+    font-family: var(--font-mono); font-size: 11px; color: var(--wisy-success);
+    font-weight: 600;
+  }
+
+  /* Middle: flow with arrows */
+  .s-agents__pipe {
+    display: flex; flex-direction: column;
+    gap: 14px;
+    justify-content: center;
+  }
+  .s-agents__step {
+    background: var(--wisy-white);
+    border-radius: 20px;
+    border: 1px solid var(--border-1);
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    align-items: center;
+    gap: 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .s-agents__step .num {
+    width: 48px; height: 48px;
+    border-radius: 999px;
+    background: var(--wisy-black);
+    color: var(--wisy-white);
+    display: grid; place-items: center;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 20px;
+  }
+  .s-agents__step .num.lime { background: var(--wisy-lime); color: var(--wisy-black); }
+  .s-agents__step .num.indigo { background: var(--wisy-indigo); color: var(--wisy-white); }
+  .s-agents__step .body { min-width: 0; }
+  .s-agents__step .body .lbl {
+    font-family: var(--font-mono); font-size: 14px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--fg-3); margin: 0 0 4px;
+  }
+  .s-agents__step .body .t {
+    font-family: var(--font-sans); font-weight: 500;
+    font-size: 24px; color: var(--fg-1); line-height: 1.2;
+    margin: 0;
+  }
+  .s-agents__step .body .t em { font-style: normal; color: var(--wisy-indigo); font-weight: 600; }
+  .s-agents__step .time {
+    font-family: var(--font-mono);
+    font-size: 20px; font-weight: 600;
+    color: var(--wisy-success);
+    white-space: nowrap;
+  }
+  .s-agents__pipeArrow {
+    text-align: center;
+    color: var(--wisy-indigo);
+    font-size: 22px;
+    margin: -6px 0;
+    line-height: 1;
+  }
+
+  /* Right column: outcomes */
+  .s-agents__out {
+    display: flex; flex-direction: column;
+    gap: 14px;
+    justify-content: center;
+  }
+  .s-agents__out h3 {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-2);
+    margin: 0 0 4px;
+    font-weight: 500;
+  }
+  .s-agents__outCard {
+    background: var(--wisy-white);
+    border: 1px solid var(--border-1);
+    border-radius: 18px;
+    padding: 20px 24px;
+  }
+  .s-agents__outCard .v {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--wisy-black);
+    margin: 0 0 8px;
+  }
+  .s-agents__outCard .v .small { font-size: 28px; }
+  .s-agents__outCard .l {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    color: var(--fg-2);
+    line-height: 1.35;
+    margin: 0;
+  }
+  .s-agents__outCard.dark {
+    background: var(--wisy-black);
+    color: var(--wisy-white);
+    border: none;
+  }
+  .s-agents__outCard.dark .v { color: var(--wisy-lime); }
+  .s-agents__outCard.dark .l { color: rgba(255,255,255,0.75); }
+
+  /* ============================================================
+     SLIDE 6 — HQI
+     ============================================================ */
+  .s-hqi {
+    height: 100%;
+    background: var(--wisy-white);
+    padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 40px;
+  }
+  .s-hqi__head {
+    display: grid;
+    grid-template-columns: 1fr 600px;
+    gap: 80px;
+    align-items: end;
+  }
+  .s-hqi__head h2 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 96px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--wisy-black);
+    margin: 24px 0 0;
+    text-wrap: balance;
+  }
+  .s-hqi__head h2 em { font-style: normal; color: var(--wisy-indigo); }
+  .s-hqi__head p {
+    font-size: 26px;
+    line-height: 1.4;
+    color: var(--fg-2);
+    margin: 0;
+  }
+  .s-hqi__head p strong { color: var(--fg-1); font-weight: 600; }
+
+  /* Mac window */
+  .s-hqi__mac {
+    background: #eaeaef;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-1);
+    display: flex;
+    flex-direction: column;
+  }
+  .s-hqi__macBar {
+    background: linear-gradient(180deg, #f6f6fa 0%, #ececf2 100%);
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    gap: 8px;
+    border-bottom: 1px solid #d8d8e0;
+  }
+  .s-hqi__macBar .dot {
+    width: 13px; height: 13px; border-radius: 999px;
+    background: #ddd;
+  }
+  .s-hqi__macBar .dot.r { background: #ff5f57; }
+  .s-hqi__macBar .dot.y { background: #ffbd2e; }
+  .s-hqi__macBar .dot.g { background: #28c941; }
+  .s-hqi__macBar .url {
+    margin-left: 20px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--fg-3);
+    letter-spacing: 0.04em;
+  }
+  .s-hqi__macBar .url b { color: var(--wisy-indigo); font-weight: 600; }
+
+  .s-hqi__app {
+    flex: 1;
+    background: var(--wisy-white);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+  }
+  .s-hqi__sidebar {
+    background: #fafafd;
+    border-right: 1px solid var(--border-1);
+    padding: 28px 20px;
+    display: flex; flex-direction: column;
+    gap: 6px;
+  }
+  .s-hqi__sidebar .logo {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--wisy-indigo);
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  .s-hqi__sidebar .nav {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--fg-2);
+    cursor: pointer;
+  }
+  .s-hqi__sidebar .nav.active {
+    background: var(--wisy-indigo-100);
+    color: var(--wisy-indigo);
+    font-weight: 600;
+  }
+  .s-hqi__sidebar .nav .ic {
+    width: 16px; height: 16px; border-radius: 4px;
+    background: var(--fg-3);
+    opacity: 0.4;
+  }
+  .s-hqi__sidebar .nav.active .ic { background: var(--wisy-indigo); opacity: 1; }
+
+  .s-hqi__main {
+    padding: 28px 32px;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 22px;
+    overflow: hidden;
+  }
+  .s-hqi__topRow {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .s-hqi__topRow h3 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--fg-1);
+    margin: 0;
+  }
+  .s-hqi__topRow h3 span { color: var(--fg-3); font-weight: 400; font-size: 18px; }
+  .s-hqi__topRow .live {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--wisy-indigo-100);
+    color: var(--wisy-indigo);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .s-hqi__topRow .live::before {
+    content: ""; width: 8px; height: 8px; border-radius: 999px;
+    background: var(--wisy-success);
+    box-shadow: 0 0 0 4px rgba(31,138,91,0.18);
+  }
+
+  .s-hqi__kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .s-hqi__kpi {
+    border: 1px solid var(--border-1);
+    border-radius: 16px;
+    padding: 18px 20px;
+    background: var(--wisy-white);
+  }
+  .s-hqi__kpi .l {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin: 0 0 8px;
+  }
+  .s-hqi__kpi .v {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--fg-1);
+    margin: 0;
+  }
+  .s-hqi__kpi .d {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    margin-top: 6px;
+    color: var(--wisy-success);
+    font-weight: 600;
+  }
+  .s-hqi__kpi .d.bad { color: var(--wisy-danger); }
+
+  .s-hqi__panels {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 18px;
+    min-height: 0;
+  }
+  .s-hqi__panel {
+    border: 1px solid var(--border-1);
+    border-radius: 16px;
+    padding: 20px;
+    background: var(--wisy-white);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .s-hqi__panel h4 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 16px;
+    margin: 0 0 16px;
+    color: var(--fg-1);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .s-hqi__panel h4 .pill {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--wisy-gray-50);
+    color: var(--fg-2);
+    padding: 4px 10px;
+    border-radius: 999px;
+    height: auto;
+    font-weight: 500;
+  }
+  /* Heatmap */
+  .s-hqi__heat {
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 4px;
+    height: 100%;
+  }
+  .s-hqi__heat span {
+    border-radius: 4px;
+    background: var(--wisy-indigo-100);
+  }
+  /* Alerts list */
+  .s-hqi__alerts {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .s-hqi__alert {
+    display: grid;
+    grid-template-columns: 8px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--wisy-gray-50);
+  }
+  .s-hqi__alert .bar { width: 4px; height: 100%; min-height: 34px; border-radius: 4px; background: var(--wisy-indigo); }
+  .s-hqi__alert.warn .bar { background: var(--wisy-warning); }
+  .s-hqi__alert.danger .bar { background: var(--wisy-danger); }
+  .s-hqi__alert .body { font-family: var(--font-sans); font-size: 14px; color: var(--fg-1); font-weight: 500; line-height: 1.3; }
+  .s-hqi__alert .body small { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-3); margin-top: 2px; }
+  .s-hqi__alert .rev { font-family: var(--font-mono); font-weight: 600; font-size: 14px; color: var(--wisy-success); white-space: nowrap; }
+
+  /* Floating call-outs */
+  .s-hqi__callout {
+    position: absolute;
+    background: var(--wisy-black);
+    color: var(--wisy-white);
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    z-index: 5;
+  }
+
+  /* ============================================================
+     SLIDE 7 — Convergence / Agentic flow
+     ============================================================ */
+  .s-conv {
+    height: 100%;
+    box-sizing: border-box;
+    background:
+      radial-gradient(circle at 50% 60%, rgba(83,84,237,0.06), transparent 60%),
+      var(--wisy-gray-50);
+    padding: 64px var(--pad-x) 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Background grid */
+  .s-conv::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(83,84,237,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(83,84,237,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
+  .s-conv__head {
+    position: relative;
+    z-index: 2;
+  }
+  .s-conv__head h2 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 64px;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--wisy-black);
+    margin: 14px 0 12px;
+    text-wrap: balance;
+    max-width: 1500px;
+  }
+  .s-conv__head h2 em { font-style: normal; color: var(--wisy-indigo); }
+  .s-conv__head p {
+    font-size: 22px;
+    color: var(--fg-2);
+    line-height: 1.4;
+    margin: 0;
+    max-width: 1100px;
+  }
+
+  .s-conv__diagram {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    z-index: 2;
+  }
+  .s-conv__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Streams column (left) */
+  .s-conv__streams {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 2;
+  }
+  .s-conv__stream {
+    background: var(--wisy-white);
+    border: 1px solid var(--border-1);
+    border-radius: 14px;
+    padding: 12px 18px;
+    display: grid;
+    grid-template-columns: 36px 1fr 14px;
+    gap: 14px;
+    align-items: center;
+    box-shadow: var(--shadow-xs);
+  }
+  [data-deck-active] .s-conv__stream {
+    animation: convStreamIn 480ms var(--ease-out) both;
+  }
+  [data-deck-active] .s-conv__stream:nth-child(1) { animation-delay: 0ms; }
+  [data-deck-active] .s-conv__stream:nth-child(2) { animation-delay: 80ms; }
+  [data-deck-active] .s-conv__stream:nth-child(3) { animation-delay: 160ms; }
+  [data-deck-active] .s-conv__stream:nth-child(4) { animation-delay: 240ms; }
+  [data-deck-active] .s-conv__stream:nth-child(5) { animation-delay: 320ms; }
+  @keyframes convStreamIn {
+    from { opacity: 0; transform: translateX(-24px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .s-conv__stream .icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: grid; place-items: center;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--wisy-white);
+    letter-spacing: 0;
+  }
+  .s-conv__stream:nth-child(1) .icon { background: var(--wisy-indigo); }
+  .s-conv__stream:nth-child(2) .icon { background: var(--wisy-lime); color: var(--wisy-black); }
+  .s-conv__stream:nth-child(3) .icon { background: var(--wisy-indigo-200); color: var(--wisy-indigo-800); }
+  .s-conv__stream:nth-child(4) .icon { background: var(--wisy-black); }
+  .s-conv__stream:nth-child(5) .icon { background: var(--wisy-success); }
+  .s-conv__stream .lbl {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin: 0 0 2px;
+  }
+  .s-conv__stream .ttl {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--fg-1);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .s-conv__stream .live {
+    width: 8px; height: 8px;
+    border-radius: 999px;
+    background: var(--wisy-success);
+    box-shadow: 0 0 0 0 rgba(31,138,91,0.5);
+  }
+  [data-deck-active] .s-conv__stream .live {
+    animation: convDotPulse 1800ms ease-out infinite;
+  }
+  @keyframes convDotPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(31,138,91,0.6); }
+    70%  { box-shadow: 0 0 0 10px rgba(31,138,91,0); }
+    100% { box-shadow: 0 0 0 0 rgba(31,138,91,0); }
+  }
+
+  /* Central agent core */
+  .s-conv__core {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 360px;
+    background: var(--wisy-black);
+    color: var(--wisy-white);
+    border-radius: 28px;
+    padding: 26px 26px 22px;
+    text-align: left;
+    box-shadow: 0 30px 80px rgba(83,84,237,0.32), 0 0 0 6px rgba(83,84,237,0.06);
+    z-index: 3;
+    overflow: hidden;
+  }
+  [data-deck-active] .s-conv__core {
+    animation: convCoreIn 720ms var(--ease-out) 220ms both;
+  }
+  @keyframes convCoreIn {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  /* Pulse ring behind core */
+  .s-conv__core::before,
+  .s-conv__core::after {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 100%; height: 100%;
+    border: 1.5px solid var(--wisy-indigo);
+    border-radius: 28px;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+    pointer-events: none;
+  }
+  [data-deck-active] .s-conv__core::before { animation: convRing 2400ms var(--ease-out) 800ms infinite; }
+  [data-deck-active] .s-conv__core::after  { animation: convRing 2400ms var(--ease-out) 1600ms infinite; }
+  @keyframes convRing {
+    0%   { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0;   transform: translate(-50%, -50%) scale(1.45); }
+  }
+
+  .s-conv__coreHead {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .s-conv__coreMark {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--wisy-indigo);
+    color: var(--wisy-white);
+    display: grid; place-items: center;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    text-transform: lowercase;
+  }
+  .s-conv__coreLbl {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wisy-indigo-200);
+  }
+  .s-conv__coreStatus {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--wisy-lime);
+  }
+  .s-conv__coreStatus .d {
+    width: 6px; height: 6px; border-radius: 999px;
+    background: var(--wisy-lime);
+  }
+  [data-deck-active] .s-conv__coreStatus .d {
+    animation: convBlink 1200ms steps(2, end) infinite;
+  }
+  @keyframes convBlink {
+    50% { opacity: 0.25; }
+  }
+
+  .s-conv__coreV {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--wisy-white);
+    margin: 0 0 12px;
+  }
+  .s-conv__coreV em { font-style: normal; color: var(--wisy-lime); }
+
+  /* Throughput meter + sparkline */
+  .s-conv__coreMeter {
+    margin-bottom: 14px;
+  }
+  .s-conv__coreMeterTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .s-conv__coreMeterTop .l {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--wisy-indigo-200);
+  }
+  .s-conv__coreMeterTop .v {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    color: var(--wisy-white);
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .s-conv__coreMeterTop .v em {
+    font-style: normal;
+    color: var(--wisy-lime);
+    font-size: 24px;
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+  }
+  .s-conv__coreMeterTop .v .u {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .s-conv__spark {
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+    gap: 3px;
+    height: 26px;
+    align-items: end;
+  }
+  .s-conv__spark span {
+    display: block;
+    background: var(--wisy-indigo-300);
+    border-radius: 2px;
+    height: var(--h, 30%);
+    transform-origin: bottom;
+  }
+  [data-deck-active] .s-conv__spark span {
+    animation: convSpark 1800ms var(--ease-out) infinite alternate;
+  }
+  [data-deck-active] .s-conv__spark span:nth-child(3n)   { animation-delay: 100ms; background: var(--wisy-lime); }
+  [data-deck-active] .s-conv__spark span:nth-child(5n)   { animation-delay: 200ms; }
+  [data-deck-active] .s-conv__spark span:nth-child(4n+1) { animation-delay: 300ms; }
+  [data-deck-active] .s-conv__spark span:nth-child(7n)   { animation-delay: 50ms; background: var(--wisy-lime); }
+  @keyframes convSpark {
+    from { transform: scaleY(0.6); }
+    to   { transform: scaleY(1.0); }
+  }
+
+  /* Sub-agents */
+  .s-conv__agents {
+    display: flex; flex-direction: column; gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .s-conv__agent {
+    display: grid;
+    grid-template-columns: 8px 1fr auto 70px;
+    gap: 10px;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: rgba(255,255,255,0.92);
+    letter-spacing: 0.02em;
+  }
+  .s-conv__agent .dot {
+    width: 8px; height: 8px;
+    border-radius: 999px;
+    background: var(--wisy-lime);
+    box-shadow: 0 0 0 0 rgba(221,244,91,0.5);
+  }
+  [data-deck-active] .s-conv__agent .dot {
+    animation: convAgentPulse 1400ms var(--ease-out) infinite;
+  }
+  [data-deck-active] .s-conv__agent:nth-child(1) .dot { animation-duration: 1100ms; }
+  [data-deck-active] .s-conv__agent:nth-child(2) .dot { animation-duration: 1500ms; }
+  [data-deck-active] .s-conv__agent:nth-child(3) .dot { animation-duration: 1800ms; }
+  [data-deck-active] .s-conv__agent.idle .dot { animation: none; background: rgba(255,255,255,0.25); }
+  @keyframes convAgentPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(221,244,91,0.55); }
+    70%  { box-shadow: 0 0 0 6px rgba(221,244,91,0); }
+    100% { box-shadow: 0 0 0 0 rgba(221,244,91,0); }
+  }
+  .s-conv__agent .nm {
+    color: rgba(255,255,255,0.95);
+  }
+  .s-conv__agent.idle .nm { color: rgba(255,255,255,0.55); }
+  .s-conv__agent .rate {
+    color: var(--wisy-lime);
+    font-weight: 600;
+    font-size: 11px;
+  }
+  .s-conv__agent.idle .rate {
+    color: var(--wisy-indigo-200);
+    font-weight: 400;
+  }
+  .s-conv__agent .rate em {
+    font-style: normal;
+    font-variant-numeric: tabular-nums;
+  }
+  .s-conv__agent .bar {
+    width: 70px; height: 4px;
+    background: rgba(255,255,255,0.10);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+  .s-conv__agent .bar i {
+    display: block;
+    height: 100%;
+    width: var(--w, 50%);
+    background: var(--wisy-lime);
+    border-radius: 999px;
+    transform-origin: left;
+  }
+  [data-deck-active] .s-conv__agent .bar i {
+    animation: convAgentBar 2200ms var(--ease-in-out) infinite;
+  }
+  [data-deck-active] .s-conv__agent:nth-child(1) .bar i { animation-duration: 1900ms; }
+  [data-deck-active] .s-conv__agent:nth-child(2) .bar i { animation-duration: 2600ms; animation-delay: -300ms; }
+  [data-deck-active] .s-conv__agent:nth-child(3) .bar i { animation-duration: 2200ms; animation-delay: -500ms; }
+  [data-deck-active] .s-conv__agent.idle .bar i { animation: none; opacity: 0.5; background: var(--wisy-indigo-300); }
+  @keyframes convAgentBar {
+    0%, 100% { transform: scaleX(0.65); }
+    50%      { transform: scaleX(1.0); }
+  }
+
+  /* Activity log (ticker inside core) */
+  .s-conv__log {
+    margin-top: 12px;
+    height: 72px;
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 8px;
+    position: relative;
+    -webkit-mask: linear-gradient(180deg, transparent 0%, #000 25%, #000 75%, transparent 100%);
+            mask: linear-gradient(180deg, transparent 0%, #000 25%, #000 75%, transparent 100%);
+  }
+  .s-conv__logRow {
+    display: grid;
+    grid-template-columns: 88px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.78);
+    line-height: 1.4;
+    height: 22px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .s-conv__logRow .t {
+    color: rgba(255,255,255,0.35);
+    font-size: 10px;
+    letter-spacing: 0.02em;
+  }
+  .s-conv__logRow .m {
+    color: rgba(255,255,255,0.9);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .s-conv__logRow .m em {
+    font-style: normal;
+    color: var(--wisy-indigo-200);
+  }
+  .s-conv__logRow .v {
+    font-weight: 600;
+    font-size: 11px;
+  }
+  .s-conv__logRow .v.ok { color: var(--wisy-success); }
+  .s-conv__logRow .v.hi { color: var(--wisy-lime); }
+
+  [data-deck-active] .s-conv__log .s-conv__logRow {
+    animation: convLogScroll 6s linear infinite;
+  }
+  [data-deck-active] .s-conv__log .s-conv__logRow.r0 { animation-delay: 0s; }
+  [data-deck-active] .s-conv__log .s-conv__logRow.r1 { animation-delay: -1s; }
+  [data-deck-active] .s-conv__log .s-conv__logRow.r2 { animation-delay: -2s; }
+  [data-deck-active] .s-conv__log .s-conv__logRow.r3 { animation-delay: -3s; }
+  [data-deck-active] .s-conv__log .s-conv__logRow.r4 { animation-delay: -4s; }
+  [data-deck-active] .s-conv__log .s-conv__logRow.r5 { animation-delay: -5s; }
+  @keyframes convLogScroll {
+    0%   { transform: translateY(72px); opacity: 0; }
+    10%  { opacity: 1; }
+    50%  { transform: translateY(0); opacity: 1; }
+    90%  { transform: translateY(-72px); opacity: 1; }
+    100% { transform: translateY(-72px); opacity: 0; }
+  }
+  .s-conv__log {
+    /* let absolute children stack */
+    position: relative;
+  }
+  .s-conv__log .s-conv__logRow {
+    position: absolute;
+    left: 0; right: 0;
+    top: 8px;
+  }
+
+  /* Outcomes column (right) */
+  .s-conv__outcomes {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 400px;
+    display: flex; flex-direction: column; gap: 10px;
+    z-index: 2;
+  }
+  .s-conv__out {
+    background: var(--wisy-white);
+    border-radius: 14px;
+    padding: 14px 20px;
+    border: 1px solid var(--border-1);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+  [data-deck-active] .s-conv__out {
+    animation: convOutIn 480ms var(--ease-out) both;
+  }
+  [data-deck-active] .s-conv__out:nth-child(1) { animation-delay: 900ms; }
+  [data-deck-active] .s-conv__out:nth-child(2) { animation-delay: 1050ms; }
+  [data-deck-active] .s-conv__out:nth-child(3) { animation-delay: 1200ms; }
+  [data-deck-active] .s-conv__out:nth-child(4) { animation-delay: 1350ms; }
+  @keyframes convOutIn {
+    from { opacity: 0; transform: translateX(24px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .s-conv__out.hero {
+    background: var(--wisy-lime);
+    border: none;
+  }
+  .s-conv__out .v {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--wisy-black);
+    margin: 0;
+    white-space: nowrap;
+  }
+  .s-conv__out.hero .v { font-size: 44px; }
+  .s-conv__out .l {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--fg-2);
+    line-height: 1.3;
+    margin: 0;
+  }
+  .s-conv__out.hero .l { color: var(--wisy-black); font-weight: 500; }
+
+  /* SVG paths */
+  /* Outcome value flash + sparkle when a new decision arrives */
+  .s-conv__out .v { transition: transform var(--dur-base) var(--ease-out); }
+  [data-deck-active] .s-conv__out .v {
+    animation: convOutFlash 4.4s var(--ease-out) infinite;
+  }
+  [data-deck-active] .s-conv__out:nth-child(1) .v { animation-delay: 0.0s; }
+  [data-deck-active] .s-conv__out:nth-child(2) .v { animation-delay: 1.1s; }
+  [data-deck-active] .s-conv__out:nth-child(3) .v { animation-delay: 2.2s; }
+  [data-deck-active] .s-conv__out:nth-child(4) .v { animation-delay: 3.3s; }
+  @keyframes convOutFlash {
+    0%, 92%, 100% { transform: scale(1); }
+    4%  { transform: scale(1.08); }
+    10% { transform: scale(1); }
+  }
+  .s-conv__out {
+    position: relative;
+  }
+  .s-conv__out::after {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 0 0 rgba(83,84,237,0);
+    pointer-events: none;
+  }
+  [data-deck-active] .s-conv__out::after {
+    animation: convOutGlow 4.4s var(--ease-out) infinite;
+  }
+  [data-deck-active] .s-conv__out:nth-child(1)::after { animation-delay: 0.0s; }
+  [data-deck-active] .s-conv__out:nth-child(2)::after { animation-delay: 1.1s; }
+  [data-deck-active] .s-conv__out:nth-child(3)::after { animation-delay: 2.2s; }
+  [data-deck-active] .s-conv__out:nth-child(4)::after { animation-delay: 3.3s; }
+  @keyframes convOutGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(83,84,237,0); }
+    3%       { box-shadow: 0 0 0 4px rgba(83,84,237,0.18); }
+    12%      { box-shadow: 0 0 0 0 rgba(83,84,237,0); }
+  }
+  .s-conv__out.hero::after {
+    /* lime hero gets a lime glow */
+  }
+  [data-deck-active] .s-conv__out.hero::after {
+    animation-name: convOutGlowHero;
+  }
+  @keyframes convOutGlowHero {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(221,244,91,0); }
+    3%       { box-shadow: 0 0 0 6px rgba(221,244,91,0.45); }
+    12%      { box-shadow: 0 0 0 0 rgba(221,244,91,0); }
+  }
+
+  .s-conv__path {
+    fill: none;
+    stroke: rgba(83,84,237,0.22);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .s-conv__path.out { stroke: rgba(0,0,0,0.18); }
+  .s-conv__pathLive {
+    fill: none;
+    stroke: var(--wisy-indigo);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 4 12;
+    stroke-dashoffset: 0;
+    vector-effect: non-scaling-stroke;
+  }
+  [data-deck-active] .s-conv__pathLive {
+    animation: convDash 1600ms linear infinite;
+  }
+  @keyframes convDash {
+    to { stroke-dashoffset: -160; }
+  }
+  .s-conv__pathLive.out { stroke: var(--wisy-lime); }
+
+  .s-conv__legend {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border-1);
+    padding-top: 18px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .s-conv__legend strong { color: var(--wisy-black); font-weight: 600; }
+
+  .s-conv__arrow {
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+  }
+  .s-conv__arrow svg { width: 100%; height: 2px; }
+  .s-conv__arrow .lbl {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-2);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  /* ============================================================
+     SLIDE 8 — Credibility
+     ============================================================ */
+  .s-cred {
+    height: 100%;
+    box-sizing: border-box;
+    background: var(--wisy-black);
+    color: var(--wisy-white);
+    padding: 72px var(--pad-x) 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    position: relative;
+  }
+  .s-cred__head h2 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 64px;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--wisy-white);
+    margin: 18px 0 0;
+    text-wrap: balance;
+    max-width: 1500px;
+  }
+  .s-cred__head h2 em { font-style: normal; color: var(--wisy-lime); }
+
+  .s-cred__grid {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 40px;
+    flex: 1;
+    min-height: 0;
+  }
+  .s-cred__lead {
+    background: var(--wisy-indigo);
+    border-radius: 28px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: var(--wisy-white);
+    position: relative;
+    overflow: hidden;
+  }
+  .s-cred__lead .kicker {
+    color: var(--wisy-indigo-200);
+  }
+  .s-cred__lead .kicker .dot { background: var(--wisy-lime); }
+  .s-cred__lead .lockup {
+    margin: 24px 0;
+    display: flex; align-items: center;
+    gap: 20px;
+  }
+  .s-cred__lead .lockup .wisy {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 96px;
+    letter-spacing: -0.04em;
+    line-height: 0.85;
+    text-transform: lowercase;
+    color: var(--wisy-white);
+  }
+  .s-cred__lead .lockup .x {
+    font-size: 48px; color: var(--wisy-indigo-200);
+    font-weight: 300;
+  }
+  .s-cred__lead .lockup .pal {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 60px;
+    letter-spacing: -0.025em;
+    color: var(--wisy-lime);
+    line-height: 0.9;
+  }
+  .s-cred__lead p {
+    font-size: 24px;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.85);
+    margin: 0;
+    max-width: 580px;
+  }
+  .s-cred__lead p em { color: var(--wisy-lime); font-style: normal; font-weight: 600; }
+
+  .s-cred__flexes {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .s-cred__flex {
+    background: #0f0f10;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 22px;
+    padding: 22px 28px;
+    flex: 1;
+  }
+  .s-cred__flex .l {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--wisy-indigo-200);
+    margin: 0 0 10px;
+  }
+  .s-cred__flex .v {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--wisy-white);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .s-cred__flex .v em { color: var(--wisy-lime); font-style: normal; }
+
+  .s-cred__logos {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    padding: 20px 0 0;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    flex-shrink: 0;
+  }
+  .s-cred__logo {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 24px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: -0.01em;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    padding: 8px 0;
+  }
+  .s-cred__logo:last-child { border-right: none; }
+  .s-cred__logo small {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-top: 6px;
+    font-weight: 400;
+  }
+
+  /* ============================================================
+     SLIDE 9 — Social proof
+     ============================================================ */
+  .s-proof {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 100%;
+    overflow: hidden;
+  }
+  .s-proof__photo {
+    position: relative;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.0) 30%, rgba(0,0,0,0.55) 100%),
+      url("https://images.unsplash.com/photo-1601598851547-4302969d0614?w=1400&q=80&auto=format&fit=crop") center/cover;
+  }
+  .s-proof__photo .tag {
+    position: absolute;
+    top: 56px; left: 56px;
+    background: var(--wisy-white);
+    color: var(--wisy-black);
+    border-radius: 999px;
+    padding: 12px 20px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .s-proof__photo .tag .dot {
+    width: 8px; height: 8px; border-radius: 999px; background: var(--wisy-indigo);
+  }
+  .s-proof__photo .brandStamp {
+    position: absolute;
+    left: 56px; bottom: 56px;
+    color: var(--wisy-white);
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 56px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .s-proof__photo .brandStamp span {
+    display: block;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    margin-top: 12px;
+  }
+
+  .s-proof__right {
+    padding: 72px 80px 72px 80px;
+    background: var(--wisy-white);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .s-proof__head h2 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 56px;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--wisy-black);
+    margin: 18px 0 0;
+    text-wrap: balance;
+  }
+
+  .s-proof__quote {
+    background: var(--wisy-indigo-100);
+    border-radius: 22px;
+    padding: 26px 32px;
+    position: relative;
+  }
+  .s-proof__quote::before {
+    content: "“";
+    position: absolute;
+    top: -8px; left: 20px;
+    font-family: var(--font-sans);
+    font-size: 96px;
+    line-height: 1;
+    color: var(--wisy-indigo);
+    font-weight: 600;
+  }
+  .s-proof__quote p {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1.35;
+    color: var(--wisy-black);
+    margin: 0 0 16px;
+    padding-left: 8px;
+    text-wrap: balance;
+  }
+  .s-proof__quote .meta {
+    display: flex; align-items: center; gap: 14px;
+    padding-left: 8px;
+  }
+  .s-proof__quote .meta .av {
+    width: 44px; height: 44px; border-radius: 999px;
+    background: var(--wisy-indigo);
+    color: var(--wisy-white);
+    display: grid; place-items: center;
+    font-weight: 600; font-size: 16px;
+  }
+  .s-proof__quote .meta .who {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    color: var(--fg-1);
+    font-weight: 600;
+  }
+  .s-proof__quote .meta .who span {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-2);
+    margin-top: 2px;
+    font-weight: 400;
+  }
+
+  .s-proof__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-1);
+  }
+  .s-proof__stat .v {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--wisy-indigo);
+    margin: 0 0 6px;
+  }
+  .s-proof__stat .l {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--fg-2);
+    line-height: 1.35;
+    margin: 0;
+  }
+
+  /* ============================================================
+     SLIDE 10 — Bottom line
+     ============================================================ */
+  .s-close {
+    height: 100%;
+    box-sizing: border-box;
+    background: var(--wisy-white);
+    padding: 72px var(--pad-x) 72px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .s-close__head {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .s-close__hero {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 64px;
+    align-items: center;
+    flex: 1;
+    min-height: 0;
+  }
+  .s-close__num {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 360px;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    color: var(--wisy-indigo);
+    margin: 0;
+    position: relative;
+  }
+  .s-close__num .x {
+    font-size: 200px;
+    color: var(--wisy-black);
+    margin-left: -8px;
+  }
+  .s-close__num .min {
+    position: absolute;
+    bottom: 24px; right: -8px;
+    transform: rotate(-4deg);
+    background: var(--wisy-lime);
+    color: var(--wisy-black);
+    padding: 8px 18px 12px;
+    border-radius: 14px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .s-close__right h2 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--wisy-black);
+    margin: 18px 0 0;
+    text-wrap: balance;
+  }
+  .s-close__right h2 em { font-style: normal; color: var(--wisy-indigo); }
+  .s-close__right .quote {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 1.3;
+    color: var(--wisy-white);
+    margin: 28px 0 0;
+    padding: 24px 28px;
+    background: var(--wisy-black);
+    border-radius: 20px;
+    text-wrap: balance;
+  }
+  .s-close__right .quote em { font-style: normal; color: var(--wisy-lime); }
+
+  .s-close__cta {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border-1);
+    padding-top: 28px;
+    flex-shrink: 0;
+  }
+  .s-close__cta .who {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--fg-1);
+  }
+  .s-close__cta .who span {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  .s-close__cta .next {
+    display: flex; align-items: center; gap: 20px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-2);
+  }
+  .s-close__cta .next .btn {
+    background: var(--wisy-indigo);
+    color: var(--wisy-white);
+    padding: 16px 26px;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-size: 16px;
+    box-shadow: var(--shadow-indigo);
+  }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- ====================================================
+       SLIDE 1 — Title
+       ==================================================== -->
+  <section data-label="01 Title">
+    <div class="s-title">
+      <div class="s-title__left">
+        <div>
+          <p class="kicker"><span class="dot"></span><span>Wisy &middot; Field deck &middot; 2026</span></p>
+          <h1 class="s-title__wordmark">wisy:</h1>
+        </div>
+        <div class="s-title__hook">
+          <p class="t">From <em>shelf</em> to <em>HQ</em>.<br/>Real-time shelf intelligence.</p>
+          <p class="sub">Photograph the shelf. Wisy ranks the fix list by revenue. Your team acts before they leave the store — your HQ sees it before lunch.</p>
+        </div>
+        <div class="s-title__meta">
+          <span>For CPG &amp; Grocery</span>
+          <span class="bar"></span>
+          <span>5 min</span>
+          <span class="bar"></span>
+          <span>Confidential</span>
+        </div>
+      </div>
+      <div class="s-title__right">
+        <div class="s-title__rightInner">
+          <div class="s-title__mark">w:</div>
+          <div class="s-title__statBlock">
+            <p class="s-title__stat">250 SKUs.<br/>One photo.</p>
+            <p class="s-title__statLbl">The whole shelf, read and ranked — even offline.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 2 — $1.7 trillion
+       ==================================================== -->
+  <section data-label="02 Stakes">
+    <div class="s-stakes">
+      <p class="kicker"><span class="dot"></span><span>The stakes &middot; Global retail execution</span></p>
+
+      <div class="s-stakes__hero">
+        <p class="s-stakes__number">$1.7T<span class="unit"></span></p>
+        <div class="s-stakes__copy">
+          <h2>lost every year to bad retail execution.</h2>
+          <p>For a $1B brand, that's <strong style="color: var(--wisy-lime)">$20M&nbsp;–&nbsp;$50M</strong> walking off the shelf annually. Out-of-stocks. Wrong planogram. Missed promotion. Quiet, daily revenue leak.</p>
+        </div>
+      </div>
+
+      <div class="s-stakes__row">
+        <div class="s-stakes__cell">
+          <p class="n"><span class="accent">1 in 13</span></p>
+          <p class="l">items a shopper looks for is out of stock — and most walk away.</p>
+        </div>
+        <div class="s-stakes__cell">
+          <p class="n"><span class="accent">~70%</span></p>
+          <p class="l">of trade promotions fail to execute at the shelf as planned.</p>
+        </div>
+        <div class="s-stakes__cell">
+          <p class="n"><span class="accent">14&nbsp;days</span></p>
+          <p class="l">average lag from shelf reality to HQ dashboard.</p>
+        </div>
+        <div class="s-stakes__cell quote">
+          <p class="q">“This isn't a technology problem. It's a <strong>data</strong> problem.”</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 3 — Ground reality
+       ==================================================== -->
+  <section data-label="03 Ground reality">
+    <div class="s-ground">
+      <div class="s-ground__photo">
+        <div class="s-ground__rep">
+          <div class="nameRow">
+            <div class="avatar">MR</div>
+            <div class="name">
+              Maria R.
+              <span>Field rep &middot; Store 0412 &middot; 11:42</span>
+            </div>
+          </div>
+          <div class="s-ground__chips">
+            <span class="c">7 active apps</span>
+            <span class="c warn">12 OOS suspected</span>
+            <span class="c">3 promos to audit</span>
+          </div>
+        </div>
+      </div>
+      <div class="s-ground__right">
+        <div class="s-ground__title">
+          <p class="kicker"><span class="dot"></span><span>The ground reality</span></p>
+          <h2>By the time HQ sees the data, the <em>shelf has already changed.</em></h2>
+        </div>
+
+        <div class="s-ground__chaos">
+          <div class="s-ground__chaosRow">
+            <div class="app" style="background: #2a72e0">A</div>
+            <div class="lbl">Audit app — manual photo + tag, 90s per shelf</div>
+            <span class="tag">no AI</span>
+          </div>
+          <div class="s-ground__chaosRow">
+            <div class="app" style="background: #5e2cbf">B</div>
+            <div class="lbl">Route planner — separate login, no shelf context</div>
+            <span class="tag">disconnected</span>
+          </div>
+          <div class="s-ground__chaosRow">
+            <div class="app" style="background: #c0392b">C</div>
+            <div class="lbl">Promo form — paper PDF, signed at checkout</div>
+            <span class="tag">offline only</span>
+          </div>
+        </div>
+
+        <p class="s-ground__quote">Reps drown in tabs, guess what matters, and leave. The opportunity is <em>gone</em> before the photo reaches HQ.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 4 — AIR
+       ==================================================== -->
+  <section data-label="04 AIR">
+    <div class="s-air">
+      <div class="s-air__left">
+        <div>
+          <p class="kicker"><span class="dot"></span><span>Product 01 &middot; The capture layer</span></p>
+          <div class="s-air__brand">
+            <div class="name">AIR<span style="color: var(--wisy-black); font-size: 60px; vertical-align: 18px;">.</span></div>
+            <div class="expand">Agentic<br/>Image<br/>Recognition</div>
+          </div>
+          <p class="s-air__pitch">The <em>cheapest robot</em> on every shelf — it lives in the rep's pocket.</p>
+        </div>
+
+        <div>
+          <div class="s-air__bars">
+            <div class="s-air__bar legacy">
+              <div class="row">
+                <span class="l">Legacy image recognition</span>
+                <span class="r">Stops at HQ</span>
+              </div>
+              <div class="track"><div class="fill"></div></div>
+            </div>
+            <div class="s-air__bar air">
+              <div class="row">
+                <span class="l">AIR — agentic, multimodal</span>
+                <span class="r">Action at the shelf</span>
+              </div>
+              <div class="track"><div class="fill"></div></div>
+            </div>
+          </div>
+
+          <div class="s-air__caps">
+            <span class="s-air__cap">Phones &amp; tablets</span>
+            <span class="s-air__cap">Cooler cameras</span>
+            <span class="s-air__cap">IoT sensors</span>
+            <span class="s-air__cap">Offline-first</span>
+            <span class="s-air__cap">Built for 2026 AI</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="s-air__right">
+        <div class="s-air__hub">
+          <svg class="s-air__hubSvg" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <path id="airL1" d="M500,500 L500,170"/>
+              <path id="airL2" d="M500,500 L814,398"/>
+              <path id="airL3" d="M500,500 L694,766"/>
+              <path id="airL4" d="M500,500 L306,766"/>
+              <path id="airL5" d="M500,500 L186,398"/>
+            </defs>
+
+            <use href="#airL1" class="s-air__hubPath"/>
+            <use href="#airL2" class="s-air__hubPath"/>
+            <use href="#airL3" class="s-air__hubPath"/>
+            <use href="#airL4" class="s-air__hubPath"/>
+            <use href="#airL5" class="s-air__hubPath"/>
+            <use href="#airL1" class="s-air__hubPathLive"/>
+            <use href="#airL2" class="s-air__hubPathLive" style="animation-delay:-150ms"/>
+            <use href="#airL3" class="s-air__hubPathLive" style="animation-delay:-300ms"/>
+            <use href="#airL4" class="s-air__hubPathLive" style="animation-delay:-450ms"/>
+            <use href="#airL5" class="s-air__hubPathLive" style="animation-delay:-600ms"/>
+
+            <!-- Pulses traveling from device → core (reversed direction via keyPoints 1→0) -->
+            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="0s"   repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL1"/></animateMotion></circle>
+            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="0.4s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL2"/></animateMotion></circle>
+            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="0.8s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL3"/></animateMotion></circle>
+            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="1.2s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL4"/></animateMotion></circle>
+            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="1.6s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL5"/></animateMotion></circle>
+
+            <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="1.8s" begin="0.2s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL1"/></animateMotion></circle>
+            <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="1.8s" begin="0.6s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL3"/></animateMotion></circle>
+            <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="1.8s" begin="1.0s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL5"/></animateMotion></circle>
+          </svg>
+
+          <!-- Center AIR core -->
+          <div class="s-air__core">
+            <span class="s-air__coreLbl">Capture layer</span>
+            <span class="s-air__coreMark">AIR</span>
+            <span class="s-air__coreStatus"><span class="d"></span>Multimodal</span>
+          </div>
+
+          <!-- Device 1: Phone (top) -->
+          <div class="s-air__dev d1" style="left:50%; top:17%;">
+            <div class="s-air__devIcon">
+              <svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><line x1="10.5" y1="18.5" x2="13.5" y2="18.5"/><line x1="10" y1="4.5" x2="14" y2="4.5"/></svg>
+            </div>
+            <div class="s-air__devLbl">Phone</div>
+            <div class="s-air__devMeta">iOS / Android</div>
+            <div class="s-air__devOnline"><span class="d"></span>Live</div>
+          </div>
+
+          <!-- Device 2: Tablet (right) -->
+          <div class="s-air__dev d2" style="left:81.4%; top:39.8%;">
+            <div class="s-air__devIcon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2.2"/><line x1="11" y1="17" x2="13" y2="17"/></svg>
+            </div>
+            <div class="s-air__devLbl">Tablet</div>
+            <div class="s-air__devMeta">In-store kiosk</div>
+            <div class="s-air__devOnline"><span class="d"></span>Live</div>
+          </div>
+
+          <!-- Device 3: IoT (bottom-right) -->
+          <div class="s-air__dev d3" style="left:69.4%; top:76.6%;">
+            <div class="s-air__devIcon">
+              <svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="11" rx="2"/><path d="M9 7 V4.5"/><path d="M15 7 V4.5"/><circle cx="9" cy="12.5" r="1"/><circle cx="15" cy="12.5" r="1"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
+            </div>
+            <div class="s-air__devLbl">IoT sensor</div>
+            <div class="s-air__devMeta">Shelf + weight</div>
+            <div class="s-air__devOnline"><span class="d"></span>Live</div>
+          </div>
+
+          <!-- Device 4: Cooler camera (bottom-left) -->
+          <div class="s-air__dev d4" style="left:30.6%; top:76.6%;">
+            <div class="s-air__devIcon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7 L9.5 4.5 H14.5 L16 7"/><circle cx="12" cy="13.5" r="3.2"/><circle cx="12" cy="13.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <div class="s-air__devLbl">Cooler camera</div>
+            <div class="s-air__devMeta">Always-on shelf</div>
+            <div class="s-air__devOnline"><span class="d"></span>Live</div>
+          </div>
+
+          <!-- Device 5: Meta glasses (left) -->
+          <div class="s-air__dev d5" style="left:18.6%; top:39.8%;">
+            <div class="s-air__devIcon">
+              <svg viewBox="0 0 24 24"><circle cx="6.5" cy="14.5" r="3.8"/><circle cx="17.5" cy="14.5" r="3.8"/><path d="M10.3 14 L13.7 14"/><path d="M2.5 12 L4 11"/><path d="M21.5 12 L20 11"/></svg>
+            </div>
+            <div class="s-air__devLbl">Meta Glasses</div>
+            <div class="s-air__devMeta">Hands-free capture</div>
+            <div class="s-air__devOnline"><span class="d"></span>Live</div>
+          </div>
+        </div>
+
+        <div class="s-air__caption">
+          <span class="lbl">· AIR network</span>
+          <span>5 device classes · <em>one</em> capture layer · <span class="v">offline-first</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 5 — Agents
+       ==================================================== -->
+  <section data-label="05 Agents">
+    <div class="s-agents">
+      <div class="s-agents__head">
+        <div>
+          <p class="kicker"><span class="dot"></span><span>Product 02 &middot; The action layer</span></p>
+          <h2>An <em>AI teammate</em> in every rep's pocket — three ranked actions, every visit.</h2>
+        </div>
+        <p>Raw data is noise. Wisy's Agents apply your business rules to every photo and surface the three highest-revenue actions before the rep leaves the aisle.</p>
+      </div>
+
+      <div class="s-agents__flow">
+        <!-- Left: phone -->
+        <div class="s-agents__phone">
+          <div class="s-agents__phoneScreen">
+            <div class="s-agents__phoneHead">
+              <span class="b">wisy:</span>
+              <span class="t">Store 0412 &middot; Aisle 4</span>
+            </div>
+            <div class="s-agents__photoCap"><span class="check">Captured</span></div>
+            <p class="s-agents__phoneSub">Next best actions &middot; ranked by revenue</p>
+            <div class="s-agents__action top">
+              <div class="ahdr"><span>01 &middot; Refill</span><span class="pri">Priority</span></div>
+              <div class="ttl">Restock Coca-Cola 600ml — 4 facings missing</div>
+              <div class="rev">+$840 / visit</div>
+            </div>
+            <div class="s-agents__action">
+              <div class="ahdr"><span>02 &middot; Compliance</span><span>Promo</span></div>
+              <div class="ttl">Rebuild promo end-cap — Nestlé summer block</div>
+              <div class="rev">+$520 / visit</div>
+            </div>
+            <div class="s-agents__action">
+              <div class="ahdr"><span>03 &middot; Planogram</span><span>Fix</span></div>
+              <div class="ttl">Swap shelf 3 — competitor in your slot</div>
+              <div class="rev">+$310 / visit</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle: pipeline -->
+        <div class="s-agents__pipe">
+          <div class="s-agents__step">
+            <div class="num">1</div>
+            <div class="body">
+              <p class="lbl">Capture</p>
+              <p class="t">One photo of the shelf</p>
+            </div>
+            <span class="time">0:00</span>
+          </div>
+          <div class="s-agents__pipeArrow">↓</div>
+          <div class="s-agents__step">
+            <div class="num indigo">2</div>
+            <div class="body">
+              <p class="lbl">Apply rules</p>
+              <p class="t">Brand &times; planogram &times; promo &times; price</p>
+            </div>
+            <span class="time">0:01</span>
+          </div>
+          <div class="s-agents__pipeArrow">↓</div>
+          <div class="s-agents__step">
+            <div class="num lime">3</div>
+            <div class="body">
+              <p class="lbl">Rank &amp; act</p>
+              <p class="t"><em>Three</em> revenue-ranked next actions</p>
+            </div>
+            <span class="time">0:02</span>
+          </div>
+        </div>
+
+        <!-- Right: outcomes -->
+        <div class="s-agents__out">
+          <h3>What it changes for the rep</h3>
+          <div class="s-agents__outCard">
+            <p class="v">30min<span class="small"> → 0</span></p>
+            <p class="l">Time spent guessing what matters at this store today</p>
+          </div>
+          <div class="s-agents__outCard">
+            <p class="v">+25%</p>
+            <p class="l">Field-team efficiency, measured by actions closed per visit</p>
+          </div>
+          <div class="s-agents__outCard dark">
+            <p class="v">3 / visit</p>
+            <p class="l">High-confidence fixes, ranked by recovered revenue</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 6 — HQI
+       ==================================================== -->
+  <section data-label="06 HQI">
+    <div class="s-hqi">
+      <div class="s-hqi__head">
+        <div>
+          <p class="kicker"><span class="dot"></span><span>Product 03 &middot; The intelligence layer</span></p>
+          <h2><em>HQI</em> — the shelf, wired straight to HQ.</h2>
+        </div>
+        <p>Not a dashboard. Not BI. <strong>HQI</strong> is the intelligence layer that pulls every shelf in every store into one live operating picture — and pushes actions back down.</p>
+      </div>
+
+      <div class="s-hqi__mac" style="position: relative;">
+        <div class="s-hqi__macBar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">hq.wisy.ai &nbsp;/&nbsp; <b>execution / live</b></span>
+        </div>
+        <div class="s-hqi__app">
+          <div class="s-hqi__sidebar">
+            <div class="logo">wisy:</div>
+            <div class="nav active"><span class="ic"></span>Live execution</div>
+            <div class="nav"><span class="ic"></span>Share of shelf</div>
+            <div class="nav"><span class="ic"></span>Out of stock</div>
+            <div class="nav"><span class="ic"></span>Planogram</div>
+            <div class="nav"><span class="ic"></span>Promotions</div>
+            <div class="nav"><span class="ic"></span>Field team</div>
+            <div class="nav"><span class="ic"></span>Routes</div>
+            <div class="nav"><span class="ic"></span>Reports</div>
+          </div>
+          <div class="s-hqi__main">
+            <div class="s-hqi__topRow">
+              <h3>Live execution <span>&middot; Latin America &middot; 4,212 stores</span></h3>
+              <span class="live">Live &middot; 2s lag</span>
+            </div>
+            <div class="s-hqi__kpis">
+              <div class="s-hqi__kpi">
+                <p class="l">On-shelf availability</p>
+                <p class="v">94.1<small style="font-size: 22px">%</small></p>
+                <p class="d">▲ 2.4 vs. last week</p>
+              </div>
+              <div class="s-hqi__kpi">
+                <p class="l">Share of shelf</p>
+                <p class="v">38.6<small style="font-size: 22px">%</small></p>
+                <p class="d">▲ 1.1</p>
+              </div>
+              <div class="s-hqi__kpi">
+                <p class="l">Promo compliance</p>
+                <p class="v">81<small style="font-size: 22px">%</small></p>
+                <p class="d bad">▼ 3.2 — Region 04</p>
+              </div>
+              <div class="s-hqi__kpi">
+                <p class="l">Revenue at risk</p>
+                <p class="v">$184<small style="font-size: 22px">K</small></p>
+                <p class="d">recoverable this week</p>
+              </div>
+            </div>
+
+            <div class="s-hqi__panels">
+              <div class="s-hqi__panel">
+                <h4>Compliance heatmap — by store cluster<span class="pill">last 24h</span></h4>
+                <div class="s-hqi__heat" id="heat"></div>
+              </div>
+              <div class="s-hqi__panel">
+                <h4>Ranked alerts — push to field<span class="pill">12 open</span></h4>
+                <div class="s-hqi__alerts">
+                  <div class="s-hqi__alert danger">
+                    <span class="bar"></span>
+                    <div class="body">OOS cluster — Coca-Cola 2L, 38 stores São Paulo<small>Region 02 &middot; opened 4m ago</small></div>
+                    <span class="rev">+$42K</span>
+                  </div>
+                  <div class="s-hqi__alert warn">
+                    <span class="bar"></span>
+                    <div class="body">Promo block missing — Nestlé summer end-cap<small>Region 04 &middot; 21 stores</small></div>
+                    <span class="rev">+$28K</span>
+                  </div>
+                  <div class="s-hqi__alert">
+                    <span class="bar"></span>
+                    <div class="body">Competitor encroachment — shelf 3, Carrefour SP<small>14 stores &middot; planogram drift</small></div>
+                    <span class="rev">+$19K</span>
+                  </div>
+                  <div class="s-hqi__alert warn">
+                    <span class="bar"></span>
+                    <div class="body">Price mismatch vs. PoS — Ferrero Rocher T16<small>Chile &middot; 9 stores</small></div>
+                    <span class="rev">+$12K</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 7 — Agentic flow / Convergence
+       ==================================================== -->
+  <section data-label="07 Convergence">
+    <div class="s-conv">
+      <div class="s-conv__head">
+        <p class="kicker"><span class="dot"></span><span>The agentic layer &middot; Data convergence</span></p>
+        <h2>A fleet of agents, joining your stack into <em>one continuous decision.</em></h2>
+        <p>Most retail tools own one workflow. Wisy runs a swarm of specialised agents across sell-in, sell-out, shelf, route and promo — joining them in real time, ranking what matters, and pushing the action to the rep.</p>
+      </div>
+
+      <div class="s-conv__diagram">
+        <!-- SVG layer: connection paths + traveling pulses -->
+        <svg class="s-conv__svg" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <path id="cp-in-1" d="M214,171 C320,171 320,300 393,300"/>
+            <path id="cp-in-2" d="M214,235 C320,235 340,300 393,300"/>
+            <path id="cp-in-3" d="M214,300 L393,300"/>
+            <path id="cp-in-4" d="M214,365 C320,365 340,300 393,300"/>
+            <path id="cp-in-5" d="M214,429 C320,429 320,300 393,300"/>
+            <path id="cp-out-1" d="M607,300 C680,300 680,192 762,192"/>
+            <path id="cp-out-2" d="M607,300 C680,300 680,270 762,270"/>
+            <path id="cp-out-3" d="M607,300 C680,300 680,348 762,348"/>
+            <path id="cp-out-4" d="M607,300 C680,300 680,426 762,426"/>
+          </defs>
+
+          <!-- Static path lines -->
+          <use href="#cp-in-1" class="s-conv__path"/>
+          <use href="#cp-in-2" class="s-conv__path"/>
+          <use href="#cp-in-3" class="s-conv__path"/>
+          <use href="#cp-in-4" class="s-conv__path"/>
+          <use href="#cp-in-5" class="s-conv__path"/>
+          <use href="#cp-out-1" class="s-conv__path out"/>
+          <use href="#cp-out-2" class="s-conv__path out"/>
+          <use href="#cp-out-3" class="s-conv__path out"/>
+          <use href="#cp-out-4" class="s-conv__path out"/>
+
+          <!-- Animated dashed flow on top -->
+          <use href="#cp-in-1" class="s-conv__pathLive"/>
+          <use href="#cp-in-2" class="s-conv__pathLive" style="animation-delay:-200ms"/>
+          <use href="#cp-in-3" class="s-conv__pathLive" style="animation-delay:-400ms"/>
+          <use href="#cp-in-4" class="s-conv__pathLive" style="animation-delay:-600ms"/>
+          <use href="#cp-in-5" class="s-conv__pathLive" style="animation-delay:-800ms"/>
+          <use href="#cp-out-1" class="s-conv__pathLive out" style="animation-delay:-200ms"/>
+          <use href="#cp-out-2" class="s-conv__pathLive out" style="animation-delay:-500ms"/>
+          <use href="#cp-out-3" class="s-conv__pathLive out" style="animation-delay:-800ms"/>
+          <use href="#cp-out-4" class="s-conv__pathLive out" style="animation-delay:-1100ms"/>
+
+          <!-- Traveling token pulses: 3 per inbound path, staggered -->
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.4s" begin="0s"    repeatCount="indefinite"><mpath href="#cp-in-1"/></animateMotion></circle>
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.4s" begin="0.8s"  repeatCount="indefinite"><mpath href="#cp-in-1"/></animateMotion></circle>
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.4s" begin="1.6s"  repeatCount="indefinite"><mpath href="#cp-in-1"/></animateMotion></circle>
+
+          <circle r="5" fill="#DDF45B"><animateMotion dur="2.4s" begin="0.3s"  repeatCount="indefinite"><mpath href="#cp-in-2"/></animateMotion></circle>
+          <circle r="5" fill="#DDF45B"><animateMotion dur="2.4s" begin="1.1s"  repeatCount="indefinite"><mpath href="#cp-in-2"/></animateMotion></circle>
+          <circle r="5" fill="#DDF45B"><animateMotion dur="2.4s" begin="1.9s"  repeatCount="indefinite"><mpath href="#cp-in-2"/></animateMotion></circle>
+
+          <circle r="5" fill="#A8AFFF"><animateMotion dur="2.4s" begin="0.15s" repeatCount="indefinite"><mpath href="#cp-in-3"/></animateMotion></circle>
+          <circle r="5" fill="#A8AFFF"><animateMotion dur="2.4s" begin="0.95s" repeatCount="indefinite"><mpath href="#cp-in-3"/></animateMotion></circle>
+          <circle r="5" fill="#A8AFFF"><animateMotion dur="2.4s" begin="1.75s" repeatCount="indefinite"><mpath href="#cp-in-3"/></animateMotion></circle>
+
+          <circle r="5" fill="#000000"><animateMotion dur="2.4s" begin="0.45s" repeatCount="indefinite"><mpath href="#cp-in-4"/></animateMotion></circle>
+          <circle r="5" fill="#000000"><animateMotion dur="2.4s" begin="1.25s" repeatCount="indefinite"><mpath href="#cp-in-4"/></animateMotion></circle>
+          <circle r="5" fill="#000000"><animateMotion dur="2.4s" begin="2.05s" repeatCount="indefinite"><mpath href="#cp-in-4"/></animateMotion></circle>
+
+          <circle r="5" fill="#1F8A5B"><animateMotion dur="2.4s" begin="0.6s"  repeatCount="indefinite"><mpath href="#cp-in-5"/></animateMotion></circle>
+          <circle r="5" fill="#1F8A5B"><animateMotion dur="2.4s" begin="1.4s"  repeatCount="indefinite"><mpath href="#cp-in-5"/></animateMotion></circle>
+          <circle r="5" fill="#1F8A5B"><animateMotion dur="2.4s" begin="2.2s"  repeatCount="indefinite"><mpath href="#cp-in-5"/></animateMotion></circle>
+
+          <!-- Outbound: lime pulses going to outcomes -->
+          <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="2.2s" begin="0.7s" repeatCount="indefinite"><mpath href="#cp-out-1"/></animateMotion></circle>
+          <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="2.2s" begin="1.8s" repeatCount="indefinite"><mpath href="#cp-out-1"/></animateMotion></circle>
+
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite"><mpath href="#cp-out-2"/></animateMotion></circle>
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="2.2s" repeatCount="indefinite"><mpath href="#cp-out-2"/></animateMotion></circle>
+
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="1.5s" repeatCount="indefinite"><mpath href="#cp-out-3"/></animateMotion></circle>
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="2.6s" repeatCount="indefinite"><mpath href="#cp-out-3"/></animateMotion></circle>
+
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="1.9s" repeatCount="indefinite"><mpath href="#cp-out-4"/></animateMotion></circle>
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="3.0s" repeatCount="indefinite"><mpath href="#cp-out-4"/></animateMotion></circle>
+
+          <!-- Labeled data packets (less frequent, narrative) -->
+          <g class="s-conv__packet">
+            <rect x="-30" y="-9" width="60" height="18" rx="9" fill="#5354ED" stroke="#0c0c1e" stroke-width="1"/>
+            <text x="0" y="3.5" text-anchor="middle" fill="#fff" font-size="10" font-family="Roboto Mono, monospace" font-weight="500" letter-spacing="0.5">SKU-184</text>
+            <animateMotion dur="3.6s" begin="0.3s" repeatCount="indefinite" rotate="0"><mpath href="#cp-in-3"/></animateMotion>
+          </g>
+          <g class="s-conv__packet">
+            <rect x="-26" y="-9" width="52" height="18" rx="9" fill="#DDF45B" stroke="#0c0c1e" stroke-width="1"/>
+            <text x="0" y="3.5" text-anchor="middle" fill="#000" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">$840</text>
+            <animateMotion dur="3.6s" begin="1.8s" repeatCount="indefinite"><mpath href="#cp-in-2"/></animateMotion>
+          </g>
+          <g class="s-conv__packet">
+            <rect x="-22" y="-9" width="44" height="18" rx="9" fill="#fff" stroke="#0c0c1e" stroke-width="1"/>
+            <text x="0" y="3.5" text-anchor="middle" fill="#000" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">OOS</text>
+            <animateMotion dur="3.6s" begin="2.7s" repeatCount="indefinite"><mpath href="#cp-in-1"/></animateMotion>
+          </g>
+
+          <!-- Outbound packets: ranked decisions -->
+          <g class="s-conv__packet">
+            <rect x="-44" y="-10" width="88" height="20" rx="10" fill="#DDF45B" stroke="#0c0c1e" stroke-width="1"/>
+            <text x="0" y="4" text-anchor="middle" fill="#000" font-size="10" font-family="Roboto Mono, monospace" font-weight="700" letter-spacing="0.5">+$840 ↑ RANK 1</text>
+            <animateMotion dur="3.2s" begin="0.8s" repeatCount="indefinite"><mpath href="#cp-out-1"/></animateMotion>
+          </g>
+          <g class="s-conv__packet">
+            <rect x="-36" y="-10" width="72" height="20" rx="10" fill="#0c0c1e" stroke="#5354ED" stroke-width="1"/>
+            <text x="0" y="4" text-anchor="middle" fill="#fff" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">FIX OOS ×5</text>
+            <animateMotion dur="3.2s" begin="1.9s" repeatCount="indefinite"><mpath href="#cp-out-2"/></animateMotion>
+          </g>
+          <g class="s-conv__packet">
+            <rect x="-40" y="-10" width="80" height="20" rx="10" fill="#0c0c1e" stroke="#5354ED" stroke-width="1"/>
+            <text x="0" y="4" text-anchor="middle" fill="#fff" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">PROMO ✓ NS-12</text>
+            <animateMotion dur="3.2s" begin="2.6s" repeatCount="indefinite"><mpath href="#cp-out-3"/></animateMotion>
+          </g>
+          <g class="s-conv__packet">
+            <rect x="-36" y="-10" width="72" height="20" rx="10" fill="#0c0c1e" stroke="#5354ED" stroke-width="1"/>
+            <text x="0" y="4" text-anchor="middle" fill="#fff" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">REP → 1471</text>
+            <animateMotion dur="3.2s" begin="3.3s" repeatCount="indefinite"><mpath href="#cp-out-4"/></animateMotion>
+          </g>
+        </svg>
+
+        <!-- Streams (left) -->
+        <div class="s-conv__streams">
+          <div class="s-conv__stream">
+            <div class="icon">SI</div>
+            <div><p class="lbl">Stream 01 &middot; ERP</p><p class="ttl">Sell-in</p></div>
+            <span class="live"></span>
+          </div>
+          <div class="s-conv__stream">
+            <div class="icon">SO</div>
+            <div><p class="lbl">Stream 02 &middot; PoS</p><p class="ttl">Sell-out</p></div>
+            <span class="live"></span>
+          </div>
+          <div class="s-conv__stream">
+            <div class="icon">SH</div>
+            <div><p class="lbl">Stream 03 &middot; AIR photos</p><p class="ttl">Shelf truth</p></div>
+            <span class="live"></span>
+          </div>
+          <div class="s-conv__stream">
+            <div class="icon">RT</div>
+            <div><p class="lbl">Stream 04 &middot; Field GPS</p><p class="ttl">Route &amp; visit</p></div>
+            <span class="live"></span>
+          </div>
+          <div class="s-conv__stream">
+            <div class="icon">PR</div>
+            <div><p class="lbl">Stream 05 &middot; Calendar</p><p class="ttl">Promo &amp; price</p></div>
+            <span class="live"></span>
+          </div>
+        </div>
+
+        <!-- Core agent orchestrator (center) -->
+        <div class="s-conv__core">
+          <div class="s-conv__coreHead">
+            <div class="s-conv__coreMark">w:</div>
+            <span class="s-conv__coreLbl">Agent orchestrator</span>
+            <span class="s-conv__coreStatus"><span class="d"></span>Live</span>
+          </div>
+
+          <div class="s-conv__coreMeter">
+            <div class="s-conv__coreMeterTop">
+              <span class="l">Throughput</span>
+              <span class="v"><em id="convActions">2,481</em><span class="u">actions / sec</span></span>
+            </div>
+            <div class="s-conv__spark" aria-hidden="true">
+              <span style="--h:42%"></span><span style="--h:58%"></span><span style="--h:36%"></span>
+              <span style="--h:64%"></span><span style="--h:48%"></span><span style="--h:72%"></span>
+              <span style="--h:54%"></span><span style="--h:88%"></span><span style="--h:62%"></span>
+              <span style="--h:76%"></span><span style="--h:44%"></span><span style="--h:82%"></span>
+              <span style="--h:58%"></span><span style="--h:94%"></span><span style="--h:68%"></span>
+              <span style="--h:78%"></span><span style="--h:52%"></span><span style="--h:86%"></span>
+            </div>
+          </div>
+
+          <div class="s-conv__agents">
+            <div class="s-conv__agent">
+              <span class="dot"></span>
+              <span class="nm">oos-detector</span>
+              <span class="rate"><em>3.2k</em>/s</span>
+              <span class="bar"><i style="--w:78%"></i></span>
+            </div>
+            <div class="s-conv__agent">
+              <span class="dot"></span>
+              <span class="nm">planogram-fix</span>
+              <span class="rate"><em>1.8k</em>/s</span>
+              <span class="bar"><i style="--w:54%"></i></span>
+            </div>
+            <div class="s-conv__agent">
+              <span class="dot"></span>
+              <span class="nm">promo-audit</span>
+              <span class="rate"><em>0.9k</em>/s</span>
+              <span class="bar"><i style="--w:32%"></i></span>
+            </div>
+            <div class="s-conv__agent idle">
+              <span class="dot"></span>
+              <span class="nm">route-optimizer</span>
+              <span class="rate">queued</span>
+              <span class="bar"><i style="--w:8%"></i></span>
+            </div>
+          </div>
+
+          <!-- Activity log -->
+          <div class="s-conv__log" aria-hidden="true">
+            <div class="s-conv__logRow r0"><span class="t">12:42:18.901</span><span class="m">photo → <em>store 0412</em></span><span class="v ok">+187 SKUs</span></div>
+            <div class="s-conv__logRow r1"><span class="t">12:42:18.902</span><span class="m">join: sell-out × shelf</span><span class="v ok">+$840</span></div>
+            <div class="s-conv__logRow r2"><span class="t">12:42:18.903</span><span class="m">oos-detector ✓ 5 fixes</span><span class="v hi">ranked</span></div>
+            <div class="s-conv__logRow r3"><span class="t">12:42:18.904</span><span class="m">action → <em>rep 1471</em></span><span class="v hi">pushed</span></div>
+            <div class="s-conv__logRow r4"><span class="t">12:42:18.905</span><span class="m">planogram-fix ✓</span><span class="v ok">+$310</span></div>
+            <div class="s-conv__logRow r5"><span class="t">12:42:18.906</span><span class="m">promo-audit → Nestlé</span><span class="v ok">+$520</span></div>
+          </div>
+        </div>
+
+        <!-- Outcomes (right) -->
+        <div class="s-conv__outcomes">
+          <div class="s-conv__out hero">
+            <p class="v">10×</p>
+            <p class="l">Minimum ROI<br/>in year one</p>
+          </div>
+          <div class="s-conv__out">
+            <p class="v">−42%</p>
+            <p class="l">Out-of-stocks in 60 days</p>
+          </div>
+          <div class="s-conv__out">
+            <p class="v">+18 pts</p>
+            <p class="l">Promo compliance, measured by photo</p>
+          </div>
+          <div class="s-conv__out">
+            <p class="v">−30 min</p>
+            <p class="l">Per store visit, returned to the rep</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="s-conv__legend">
+        <span>Each join becomes a new question your stack can't ask today.</span>
+        <span><strong>Wisy:</strong> the layer above your stack — not another tab inside it.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 8 — Credibility
+       ==================================================== -->
+  <section data-label="08 Credibility">
+    <div class="s-cred">
+      <div class="s-cred__head">
+        <p class="kicker on-dark"><span class="dot"></span><span>Why this team &middot; Why now</span></p>
+        <h2>Silicon Valley horsepower. <em>Backed by Palantir.</em></h2>
+      </div>
+
+      <div class="s-cred__grid">
+        <div class="s-cred__lead">
+          <p class="kicker"><span class="dot"></span><span>Foundational partner</span></p>
+          <div class="lockup">
+            <div class="wisy">wisy:</div>
+            <div class="x">×</div>
+            <div class="pal">Palantir</div>
+          </div>
+          <p>Built on the same data infrastructure that runs the world's hardest operational problems. Wisy is the <em>first AI-native</em> retail execution platform on top of it.</p>
+        </div>
+
+        <div class="s-cred__flexes">
+          <div class="s-cred__flex">
+            <p class="l">Disruption speed</p>
+            <p class="v">Models that ship <em>week-over-week</em> — not quarter-over-quarter.</p>
+          </div>
+          <div class="s-cred__flex">
+            <p class="l">Free of legacy drag</p>
+            <p class="v">No private-equity stagnation. No 18-month roadmaps.</p>
+          </div>
+          <div class="s-cred__flex">
+            <p class="l">Built for 2026 AI</p>
+            <p class="v">Multimodal, agentic, on-device — designed for what models can do <em>now.</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="s-cred__logos">
+        <div class="s-cred__logo">Palantir<small>Data infrastructure</small></div>
+        <div class="s-cred__logo">SV Capital<small>Lead investor</small></div>
+        <div class="s-cred__logo">Foundry<small>Platform partner</small></div>
+        <div class="s-cred__logo">AWS<small>Compute</small></div>
+        <div class="s-cred__logo">NVIDIA<small>Inference</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 9 — Social proof
+       ==================================================== -->
+  <section data-label="09 Social proof">
+    <div class="s-proof">
+      <div class="s-proof__photo">
+        <div class="tag"><span class="dot"></span>Deployed &middot; Chile</div>
+        <div class="brandStamp">CCU<span>Largest brewer &middot; Latin America</span></div>
+      </div>
+      <div class="s-proof__right">
+        <div class="s-proof__head">
+          <p class="kicker"><span class="dot"></span><span>Validated in the wild</span></p>
+          <h2>Proven where execution is hardest.</h2>
+        </div>
+
+        <div class="s-proof__quote">
+          <p>Wisy collapsed a 30-minute store audit into <strong>seconds</strong> — and gave our reps the same shelf picture our HQ team sees. We stopped arguing about the data and started fixing the shelf.</p>
+          <div class="meta">
+            <div class="av">JR</div>
+            <div class="who">J. Ramírez<span>VP Field Execution &middot; CCU</span></div>
+          </div>
+        </div>
+
+        <div class="s-proof__quote" style="background: var(--wisy-gray-50);">
+          <p>The first IR vendor where the rep gets value <em>at the shelf</em>, not three weeks later in a PDF.</p>
+          <div class="meta">
+            <div class="av" style="background: var(--wisy-black)">F</div>
+            <div class="who">Director, Trade Marketing<span>Ferrero &middot; LATAM</span></div>
+          </div>
+        </div>
+
+        <div class="s-proof__stats">
+          <div class="s-proof__stat">
+            <p class="v">4,200+</p>
+            <p class="l">Stores scanned monthly across deployed brands</p>
+          </div>
+          <div class="s-proof__stat">
+            <p class="v">1.8M</p>
+            <p class="l">Shelf photos processed by AIR last quarter</p>
+          </div>
+          <div class="s-proof__stat">
+            <p class="v">11</p>
+            <p class="l">Countries live in Latin America &amp; EMEA</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 10 — Bottom line
+       ==================================================== -->
+  <section data-label="10 Close">
+    <div class="s-close">
+      <div class="s-close__head">
+        <p class="kicker"><span class="dot"></span><span>The bottom line</span></p>
+        <p class="kicker" style="color: var(--fg-3)"><span>wisy:</span></p>
+      </div>
+
+      <div class="s-close__hero">
+        <p class="s-close__num">10<span class="x">×</span><span class="min">Minimum</span></p>
+        <div class="s-close__right">
+          <h2>Projected return on Wisy <em>in year one.</em></h2>
+          <p class="quote">Let our competitors chase next-best-actions. <em>We'll build your scaling intelligence layer.</em></p>
+        </div>
+      </div>
+
+      <div class="s-close__cta">
+        <div class="who">Wisy &middot; AI-native retail execution<span>wisy.ai &nbsp;·&nbsp; hello@wisy.ai</span></div>
+        <div class="next">
+          <span>Next step</span>
+          <span class="btn">Pilot in 30 days &nbsp;→</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</deck-stage>
+
+<script src="deck-stage.js"></script>
+<script>
+  // Live ticking counter inside the Agent Orchestrator (slide 7)
+  (function tickActions(){
+    const el = document.getElementById('convActions');
+    if (!el) return;
+    let v = 2481;
+    setInterval(() => {
+      // small random walk, biased upward, never below 2000
+      const delta = Math.floor(Math.random() * 80) - 30;
+      v = Math.max(2000, Math.min(3200, v + delta));
+      el.textContent = v.toLocaleString();
+    }, 700);
+  })();
+
+  // Cycle per-agent throughput numbers
+  (function tickAgentRates(){
+    const els = document.querySelectorAll('.s-conv__agent .rate em');
+    if (!els.length) return;
+    const bases = [3.2, 1.8, 0.9];
+    setInterval(() => {
+      els.forEach((el, i) => {
+        if (i >= bases.length) return;
+        const wobble = (Math.random() * 0.6 - 0.3);
+        const v = Math.max(0.2, bases[i] + wobble);
+        el.textContent = v.toFixed(1) + 'k';
+      });
+    }, 900);
+  })();
+</script>
+<script>
+  // Populate the HQI heatmap
+  (function buildHeat(){
+    const heat = document.getElementById('heat');
+    if (!heat) return;
+    const COLS = 16, ROWS = 8;
+    const palette = [
+      'var(--wisy-indigo-100)',  // very light
+      'var(--wisy-indigo-200)',
+      '#A8AFFF',
+      'var(--wisy-indigo)',
+      'var(--wisy-indigo-800)'
+    ];
+    // Seeded pseudo-random distribution so it looks intentional
+    let seed = 7;
+    const rng = () => (seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+    for (let i = 0; i < COLS * ROWS; i++) {
+      const r = rng();
+      let idx;
+      if (r < 0.40) idx = 0;
+      else if (r < 0.65) idx = 1;
+      else if (r < 0.85) idx = 2;
+      else if (r < 0.96) idx = 3;
+      else idx = 4;
+      // sprinkle a few lime "danger" cells
+      const lime = (rng() < 0.04);
+      const span = document.createElement('span');
+      span.style.background = lime ? 'var(--wisy-lime)' : palette[idx];
+      heat.appendChild(span);
+    }
+  })();
+</script>
+
+</body>
+</html>
