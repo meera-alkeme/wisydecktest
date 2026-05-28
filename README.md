@@ -1,15 +1,17 @@
+
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Wisy — From shelf to HQ</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap');
 /* ============================================================
    WISY DESIGN SYSTEM — Foundations
    Source of truth: Brand Style Tile (assets/Brand_Style_Tile.png)
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap');
 
 :root {
   /* ----------  COLOR — RAW TOKENS  ---------- */
@@ -232,9 +234,9 @@
     --gap-item:   28px;
   }
 
-  html, body { margin: 0; padding: 0; background: #000; font-family: var(--font-sans); color: var(--fg-1); }
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: var(--font-sans); color: var(--fg-1); }
 
-  deck-stage { background: var(--wisy-white); }
+  deck-stage { display: block; position: fixed; inset: 0; width: 100vw; height: 100vh; }
 
   /* -------- Slide base -------- */
   section {
@@ -2600,826 +2602,9 @@
     box-shadow: var(--shadow-indigo);
   }
 </style>
-</head>
-<body>
 
-<deck-stage width="1920" height="1080">
-
-  <!-- ====================================================
-       SLIDE 1 — Title
-       ==================================================== -->
-  <section data-label="01 Title">
-    <div class="s-title">
-      <div class="s-title__left">
-        <div>
-          <p class="kicker"><span class="dot"></span><span>Wisy &middot; Field deck &middot; 2026</span></p>
-          <h1 class="s-title__wordmark">wisy:</h1>
-        </div>
-        <div class="s-title__hook">
-          <p class="t">From <em>shelf</em> to <em>HQ</em>.<br/>Real-time shelf intelligence.</p>
-          <p class="sub">Photograph the shelf. Wisy ranks the fix list by revenue. Your team acts before they leave the store — your HQ sees it before lunch.</p>
-        </div>
-        <div class="s-title__meta">
-          <span>For CPG &amp; Grocery</span>
-          <span class="bar"></span>
-          <span>5 min</span>
-          <span class="bar"></span>
-          <span>Confidential</span>
-        </div>
-      </div>
-      <div class="s-title__right">
-        <div class="s-title__rightInner">
-          <div class="s-title__mark">w:</div>
-          <div class="s-title__statBlock">
-            <p class="s-title__stat">250 SKUs.<br/>One photo.</p>
-            <p class="s-title__statLbl">The whole shelf, read and ranked — even offline.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====================================================
-       SLIDE 2 — $1.7 trillion
-       ==================================================== -->
-  <section data-label="02 Stakes">
-    <div class="s-stakes">
-      <p class="kicker"><span class="dot"></span><span>The stakes &middot; Global retail execution</span></p>
-
-      <div class="s-stakes__hero">
-        <p class="s-stakes__number">$1.7T<span class="unit"></span></p>
-        <div class="s-stakes__copy">
-          <h2>lost every year to bad retail execution.</h2>
-          <p>For a $1B brand, that's <strong style="color: var(--wisy-lime)">$20M&nbsp;–&nbsp;$50M</strong> walking off the shelf annually. Out-of-stocks. Wrong planogram. Missed promotion. Quiet, daily revenue leak.</p>
-        </div>
-      </div>
-
-      <div class="s-stakes__row">
-        <div class="s-stakes__cell">
-          <p class="n"><span class="accent">1 in 13</span></p>
-          <p class="l">items a shopper looks for is out of stock — and most walk away.</p>
-        </div>
-        <div class="s-stakes__cell">
-          <p class="n"><span class="accent">~70%</span></p>
-          <p class="l">of trade promotions fail to execute at the shelf as planned.</p>
-        </div>
-        <div class="s-stakes__cell">
-          <p class="n"><span class="accent">14&nbsp;days</span></p>
-          <p class="l">average lag from shelf reality to HQ dashboard.</p>
-        </div>
-        <div class="s-stakes__cell quote">
-          <p class="q">“This isn't a technology problem. It's a <strong>data</strong> problem.”</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====================================================
-       SLIDE 3 — Ground reality
-       ==================================================== -->
-  <section data-label="03 Ground reality">
-    <div class="s-ground">
-      <div class="s-ground__photo">
-        <div class="s-ground__rep">
-          <div class="nameRow">
-            <div class="avatar">MR</div>
-            <div class="name">
-              Maria R.
-              <span>Field rep &middot; Store 0412 &middot; 11:42</span>
-            </div>
-          </div>
-          <div class="s-ground__chips">
-            <span class="c">7 active apps</span>
-            <span class="c warn">12 OOS suspected</span>
-            <span class="c">3 promos to audit</span>
-          </div>
-        </div>
-      </div>
-      <div class="s-ground__right">
-        <div class="s-ground__title">
-          <p class="kicker"><span class="dot"></span><span>The ground reality</span></p>
-          <h2>By the time HQ sees the data, the <em>shelf has already changed.</em></h2>
-        </div>
-
-        <div class="s-ground__chaos">
-          <div class="s-ground__chaosRow">
-            <div class="app" style="background: #2a72e0">A</div>
-            <div class="lbl">Audit app — manual photo + tag, 90s per shelf</div>
-            <span class="tag">no AI</span>
-          </div>
-          <div class="s-ground__chaosRow">
-            <div class="app" style="background: #5e2cbf">B</div>
-            <div class="lbl">Route planner — separate login, no shelf context</div>
-            <span class="tag">disconnected</span>
-          </div>
-          <div class="s-ground__chaosRow">
-            <div class="app" style="background: #c0392b">C</div>
-            <div class="lbl">Promo form — paper PDF, signed at checkout</div>
-            <span class="tag">offline only</span>
-          </div>
-        </div>
-
-        <p class="s-ground__quote">Reps drown in tabs, guess what matters, and leave. The opportunity is <em>gone</em> before the photo reaches HQ.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====================================================
-       SLIDE 4 — AIR
-       ==================================================== -->
-  <section data-label="04 AIR">
-    <div class="s-air">
-      <div class="s-air__left">
-        <div>
-          <p class="kicker"><span class="dot"></span><span>Product 01 &middot; The capture layer</span></p>
-          <div class="s-air__brand">
-            <div class="name">AIR<span style="color: var(--wisy-black); font-size: 60px; vertical-align: 18px;">.</span></div>
-            <div class="expand">Agentic<br/>Image<br/>Recognition</div>
-          </div>
-          <p class="s-air__pitch">The <em>cheapest robot</em> on every shelf — it lives in the rep's pocket.</p>
-        </div>
-
-        <div>
-          <div class="s-air__bars">
-            <div class="s-air__bar legacy">
-              <div class="row">
-                <span class="l">Legacy image recognition</span>
-                <span class="r">Stops at HQ</span>
-              </div>
-              <div class="track"><div class="fill"></div></div>
-            </div>
-            <div class="s-air__bar air">
-              <div class="row">
-                <span class="l">AIR — agentic, multimodal</span>
-                <span class="r">Action at the shelf</span>
-              </div>
-              <div class="track"><div class="fill"></div></div>
-            </div>
-          </div>
-
-          <div class="s-air__caps">
-            <span class="s-air__cap">Phones &amp; tablets</span>
-            <span class="s-air__cap">Cooler cameras</span>
-            <span class="s-air__cap">IoT sensors</span>
-            <span class="s-air__cap">Offline-first</span>
-            <span class="s-air__cap">Built for 2026 AI</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="s-air__right">
-        <div class="s-air__hub">
-          <svg class="s-air__hubSvg" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <path id="airL1" d="M500,500 L500,170"/>
-              <path id="airL2" d="M500,500 L814,398"/>
-              <path id="airL3" d="M500,500 L694,766"/>
-              <path id="airL4" d="M500,500 L306,766"/>
-              <path id="airL5" d="M500,500 L186,398"/>
-            </defs>
-
-            <use href="#airL1" class="s-air__hubPath"/>
-            <use href="#airL2" class="s-air__hubPath"/>
-            <use href="#airL3" class="s-air__hubPath"/>
-            <use href="#airL4" class="s-air__hubPath"/>
-            <use href="#airL5" class="s-air__hubPath"/>
-            <use href="#airL1" class="s-air__hubPathLive"/>
-            <use href="#airL2" class="s-air__hubPathLive" style="animation-delay:-150ms"/>
-            <use href="#airL3" class="s-air__hubPathLive" style="animation-delay:-300ms"/>
-            <use href="#airL4" class="s-air__hubPathLive" style="animation-delay:-450ms"/>
-            <use href="#airL5" class="s-air__hubPathLive" style="animation-delay:-600ms"/>
-
-            <!-- Pulses traveling from device → core (reversed direction via keyPoints 1→0) -->
-            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="0s"   repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL1"/></animateMotion></circle>
-            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="0.4s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL2"/></animateMotion></circle>
-            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="0.8s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL3"/></animateMotion></circle>
-            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="1.2s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL4"/></animateMotion></circle>
-            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="1.6s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL5"/></animateMotion></circle>
-
-            <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="1.8s" begin="0.2s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL1"/></animateMotion></circle>
-            <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="1.8s" begin="0.6s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL3"/></animateMotion></circle>
-            <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="1.8s" begin="1.0s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL5"/></animateMotion></circle>
-          </svg>
-
-          <!-- Center AIR core -->
-          <div class="s-air__core">
-            <span class="s-air__coreLbl">Capture layer</span>
-            <span class="s-air__coreMark">AIR</span>
-            <span class="s-air__coreStatus"><span class="d"></span>Multimodal</span>
-          </div>
-
-          <!-- Device 1: Phone (top) -->
-          <div class="s-air__dev d1" style="left:50%; top:17%;">
-            <div class="s-air__devIcon">
-              <svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><line x1="10.5" y1="18.5" x2="13.5" y2="18.5"/><line x1="10" y1="4.5" x2="14" y2="4.5"/></svg>
-            </div>
-            <div class="s-air__devLbl">Phone</div>
-            <div class="s-air__devMeta">iOS / Android</div>
-            <div class="s-air__devOnline"><span class="d"></span>Live</div>
-          </div>
-
-          <!-- Device 2: Tablet (right) -->
-          <div class="s-air__dev d2" style="left:81.4%; top:39.8%;">
-            <div class="s-air__devIcon">
-              <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2.2"/><line x1="11" y1="17" x2="13" y2="17"/></svg>
-            </div>
-            <div class="s-air__devLbl">Tablet</div>
-            <div class="s-air__devMeta">In-store kiosk</div>
-            <div class="s-air__devOnline"><span class="d"></span>Live</div>
-          </div>
-
-          <!-- Device 3: IoT (bottom-right) -->
-          <div class="s-air__dev d3" style="left:69.4%; top:76.6%;">
-            <div class="s-air__devIcon">
-              <svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="11" rx="2"/><path d="M9 7 V4.5"/><path d="M15 7 V4.5"/><circle cx="9" cy="12.5" r="1"/><circle cx="15" cy="12.5" r="1"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
-            </div>
-            <div class="s-air__devLbl">IoT sensor</div>
-            <div class="s-air__devMeta">Shelf + weight</div>
-            <div class="s-air__devOnline"><span class="d"></span>Live</div>
-          </div>
-
-          <!-- Device 4: Cooler camera (bottom-left) -->
-          <div class="s-air__dev d4" style="left:30.6%; top:76.6%;">
-            <div class="s-air__devIcon">
-              <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7 L9.5 4.5 H14.5 L16 7"/><circle cx="12" cy="13.5" r="3.2"/><circle cx="12" cy="13.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-            </div>
-            <div class="s-air__devLbl">Cooler camera</div>
-            <div class="s-air__devMeta">Always-on shelf</div>
-            <div class="s-air__devOnline"><span class="d"></span>Live</div>
-          </div>
-
-          <!-- Device 5: Meta glasses (left) -->
-          <div class="s-air__dev d5" style="left:18.6%; top:39.8%;">
-            <div class="s-air__devIcon">
-              <svg viewBox="0 0 24 24"><circle cx="6.5" cy="14.5" r="3.8"/><circle cx="17.5" cy="14.5" r="3.8"/><path d="M10.3 14 L13.7 14"/><path d="M2.5 12 L4 11"/><path d="M21.5 12 L20 11"/></svg>
-            </div>
-            <div class="s-air__devLbl">Meta Glasses</div>
-            <div class="s-air__devMeta">Hands-free capture</div>
-            <div class="s-air__devOnline"><span class="d"></span>Live</div>
-          </div>
-        </div>
-
-        <div class="s-air__caption">
-          <span class="lbl">· AIR network</span>
-          <span>5 device classes · <em>one</em> capture layer · <span class="v">offline-first</span></span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====================================================
-       SLIDE 5 — Agents
-       ==================================================== -->
-  <section data-label="05 Agents">
-    <div class="s-agents">
-      <div class="s-agents__head">
-        <div>
-          <p class="kicker"><span class="dot"></span><span>Product 02 &middot; The action layer</span></p>
-          <h2>An <em>AI teammate</em> in every rep's pocket — three ranked actions, every visit.</h2>
-        </div>
-        <p>Raw data is noise. Wisy's Agents apply your business rules to every photo and surface the three highest-revenue actions before the rep leaves the aisle.</p>
-      </div>
-
-      <div class="s-agents__flow">
-        <!-- Left: phone -->
-        <div class="s-agents__phone">
-          <div class="s-agents__phoneScreen">
-            <div class="s-agents__phoneHead">
-              <span class="b">wisy:</span>
-              <span class="t">Store 0412 &middot; Aisle 4</span>
-            </div>
-            <div class="s-agents__photoCap"><span class="check">Captured</span></div>
-            <p class="s-agents__phoneSub">Next best actions &middot; ranked by revenue</p>
-            <div class="s-agents__action top">
-              <div class="ahdr"><span>01 &middot; Refill</span><span class="pri">Priority</span></div>
-              <div class="ttl">Restock Coca-Cola 600ml — 4 facings missing</div>
-              <div class="rev">+$840 / visit</div>
-            </div>
-            <div class="s-agents__action">
-              <div class="ahdr"><span>02 &middot; Compliance</span><span>Promo</span></div>
-              <div class="ttl">Rebuild promo end-cap — Nestlé summer block</div>
-              <div class="rev">+$520 / visit</div>
-            </div>
-            <div class="s-agents__action">
-              <div class="ahdr"><span>03 &middot; Planogram</span><span>Fix</span></div>
-              <div class="ttl">Swap shelf 3 — competitor in your slot</div>
-              <div class="rev">+$310 / visit</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Middle: pipeline -->
-        <div class="s-agents__pipe">
-          <div class="s-agents__step">
-            <div class="num">1</div>
-            <div class="body">
-              <p class="lbl">Capture</p>
-              <p class="t">One photo of the shelf</p>
-            </div>
-            <span class="time">0:00</span>
-          </div>
-          <div class="s-agents__pipeArrow">↓</div>
-          <div class="s-agents__step">
-            <div class="num indigo">2</div>
-            <div class="body">
-              <p class="lbl">Apply rules</p>
-              <p class="t">Brand &times; planogram &times; promo &times; price</p>
-            </div>
-            <span class="time">0:01</span>
-          </div>
-          <div class="s-agents__pipeArrow">↓</div>
-          <div class="s-agents__step">
-            <div class="num lime">3</div>
-            <div class="body">
-              <p class="lbl">Rank &amp; act</p>
-              <p class="t"><em>Three</em> revenue-ranked next actions</p>
-            </div>
-            <span class="time">0:02</span>
-          </div>
-        </div>
-
-        <!-- Right: outcomes -->
-        <div class="s-agents__out">
-          <h3>What it changes for the rep</h3>
-          <div class="s-agents__outCard">
-            <p class="v">30min<span class="small"> → 0</span></p>
-            <p class="l">Time spent guessing what matters at this store today</p>
-          </div>
-          <div class="s-agents__outCard">
-            <p class="v">+25%</p>
-            <p class="l">Field-team efficiency, measured by actions closed per visit</p>
-          </div>
-          <div class="s-agents__outCard dark">
-            <p class="v">3 / visit</p>
-            <p class="l">High-confidence fixes, ranked by recovered revenue</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====================================================
-       SLIDE 6 — HQI
-       ==================================================== -->
-  <section data-label="06 HQI">
-    <div class="s-hqi">
-      <div class="s-hqi__head">
-        <div>
-          <p class="kicker"><span class="dot"></span><span>Product 03 &middot; The intelligence layer</span></p>
-          <h2><em>HQI</em> — the shelf, wired straight to HQ.</h2>
-        </div>
-        <p>Not a dashboard. Not BI. <strong>HQI</strong> is the intelligence layer that pulls every shelf in every store into one live operating picture — and pushes actions back down.</p>
-      </div>
-
-      <div class="s-hqi__mac" style="position: relative;">
-        <div class="s-hqi__macBar">
-          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-          <span class="url">hq.wisy.ai &nbsp;/&nbsp; <b>execution / live</b></span>
-        </div>
-        <div class="s-hqi__app">
-          <div class="s-hqi__sidebar">
-            <div class="logo">wisy:</div>
-            <div class="nav active"><span class="ic"></span>Live execution</div>
-            <div class="nav"><span class="ic"></span>Share of shelf</div>
-            <div class="nav"><span class="ic"></span>Out of stock</div>
-            <div class="nav"><span class="ic"></span>Planogram</div>
-            <div class="nav"><span class="ic"></span>Promotions</div>
-            <div class="nav"><span class="ic"></span>Field team</div>
-            <div class="nav"><span class="ic"></span>Routes</div>
-            <div class="nav"><span class="ic"></span>Reports</div>
-          </div>
-          <div class="s-hqi__main">
-            <div class="s-hqi__topRow">
-              <h3>Live execution <span>&middot; Latin America &middot; 4,212 stores</span></h3>
-              <span class="live">Live &middot; 2s lag</span>
-            </div>
-            <div class="s-hqi__kpis">
-              <div class="s-hqi__kpi">
-                <p class="l">On-shelf availability</p>
-                <p class="v">94.1<small style="font-size: 22px">%</small></p>
-                <p class="d">▲ 2.4 vs. last week</p>
-              </div>
-              <div class="s-hqi__kpi">
-                <p class="l">Share of shelf</p>
-                <p class="v">38.6<small style="font-size: 22px">%</small></p>
-                <p class="d">▲ 1.1</p>
-              </div>
-              <div class="s-hqi__kpi">
-                <p class="l">Promo compliance</p>
-                <p class="v">81<small style="font-size: 22px">%</small></p>
-                <p class="d bad">▼ 3.2 — Region 04</p>
-              </div>
-              <div class="s-hqi__kpi">
-                <p class="l">Revenue at risk</p>
-                <p class="v">$184<small style="font-size: 22px">K</small></p>
-                <p class="d">recoverable this week</p>
-              </div>
-            </div>
-
-            <div class="s-hqi__panels">
-              <div class="s-hqi__panel">
-                <h4>Compliance heatmap — by store cluster<span class="pill">last 24h</span></h4>
-                <div class="s-hqi__heat" id="heat"></div>
-              </div>
-              <div class="s-hqi__panel">
-                <h4>Ranked alerts — push to field<span class="pill">12 open</span></h4>
-                <div class="s-hqi__alerts">
-                  <div class="s-hqi__alert danger">
-                    <span class="bar"></span>
-                    <div class="body">OOS cluster — Coca-Cola 2L, 38 stores São Paulo<small>Region 02 &middot; opened 4m ago</small></div>
-                    <span class="rev">+$42K</span>
-                  </div>
-                  <div class="s-hqi__alert warn">
-                    <span class="bar"></span>
-                    <div class="body">Promo block missing — Nestlé summer end-cap<small>Region 04 &middot; 21 stores</small></div>
-                    <span class="rev">+$28K</span>
-                  </div>
-                  <div class="s-hqi__alert">
-                    <span class="bar"></span>
-                    <div class="body">Competitor encroachment — shelf 3, Carrefour SP<small>14 stores &middot; planogram drift</small></div>
-                    <span class="rev">+$19K</span>
-                  </div>
-                  <div class="s-hqi__alert warn">
-                    <span class="bar"></span>
-                    <div class="body">Price mismatch vs. PoS — Ferrero Rocher T16<small>Chile &middot; 9 stores</small></div>
-                    <span class="rev">+$12K</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====================================================
-       SLIDE 7 — Agentic flow / Convergence
-       ==================================================== -->
-  <section data-label="07 Convergence">
-    <div class="s-conv">
-      <div class="s-conv__head">
-        <p class="kicker"><span class="dot"></span><span>The agentic layer &middot; Data convergence</span></p>
-        <h2>A fleet of agents, joining your stack into <em>one continuous decision.</em></h2>
-        <p>Most retail tools own one workflow. Wisy runs a swarm of specialised agents across sell-in, sell-out, shelf, route and promo — joining them in real time, ranking what matters, and pushing the action to the rep.</p>
-      </div>
-
-      <div class="s-conv__diagram">
-        <!-- SVG layer: connection paths + traveling pulses -->
-        <svg class="s-conv__svg" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
-          <defs>
-            <path id="cp-in-1" d="M214,171 C320,171 320,300 393,300"/>
-            <path id="cp-in-2" d="M214,235 C320,235 340,300 393,300"/>
-            <path id="cp-in-3" d="M214,300 L393,300"/>
-            <path id="cp-in-4" d="M214,365 C320,365 340,300 393,300"/>
-            <path id="cp-in-5" d="M214,429 C320,429 320,300 393,300"/>
-            <path id="cp-out-1" d="M607,300 C680,300 680,192 762,192"/>
-            <path id="cp-out-2" d="M607,300 C680,300 680,270 762,270"/>
-            <path id="cp-out-3" d="M607,300 C680,300 680,348 762,348"/>
-            <path id="cp-out-4" d="M607,300 C680,300 680,426 762,426"/>
-          </defs>
-
-          <!-- Static path lines -->
-          <use href="#cp-in-1" class="s-conv__path"/>
-          <use href="#cp-in-2" class="s-conv__path"/>
-          <use href="#cp-in-3" class="s-conv__path"/>
-          <use href="#cp-in-4" class="s-conv__path"/>
-          <use href="#cp-in-5" class="s-conv__path"/>
-          <use href="#cp-out-1" class="s-conv__path out"/>
-          <use href="#cp-out-2" class="s-conv__path out"/>
-          <use href="#cp-out-3" class="s-conv__path out"/>
-          <use href="#cp-out-4" class="s-conv__path out"/>
-
-          <!-- Animated dashed flow on top -->
-          <use href="#cp-in-1" class="s-conv__pathLive"/>
-          <use href="#cp-in-2" class="s-conv__pathLive" style="animation-delay:-200ms"/>
-          <use href="#cp-in-3" class="s-conv__pathLive" style="animation-delay:-400ms"/>
-          <use href="#cp-in-4" class="s-conv__pathLive" style="animation-delay:-600ms"/>
-          <use href="#cp-in-5" class="s-conv__pathLive" style="animation-delay:-800ms"/>
-          <use href="#cp-out-1" class="s-conv__pathLive out" style="animation-delay:-200ms"/>
-          <use href="#cp-out-2" class="s-conv__pathLive out" style="animation-delay:-500ms"/>
-          <use href="#cp-out-3" class="s-conv__pathLive out" style="animation-delay:-800ms"/>
-          <use href="#cp-out-4" class="s-conv__pathLive out" style="animation-delay:-1100ms"/>
-
-          <!-- Traveling token pulses: 3 per inbound path, staggered -->
-          <circle r="5" fill="#5354ED"><animateMotion dur="2.4s" begin="0s"    repeatCount="indefinite"><mpath href="#cp-in-1"/></animateMotion></circle>
-          <circle r="5" fill="#5354ED"><animateMotion dur="2.4s" begin="0.8s"  repeatCount="indefinite"><mpath href="#cp-in-1"/></animateMotion></circle>
-          <circle r="5" fill="#5354ED"><animateMotion dur="2.4s" begin="1.6s"  repeatCount="indefinite"><mpath href="#cp-in-1"/></animateMotion></circle>
-
-          <circle r="5" fill="#DDF45B"><animateMotion dur="2.4s" begin="0.3s"  repeatCount="indefinite"><mpath href="#cp-in-2"/></animateMotion></circle>
-          <circle r="5" fill="#DDF45B"><animateMotion dur="2.4s" begin="1.1s"  repeatCount="indefinite"><mpath href="#cp-in-2"/></animateMotion></circle>
-          <circle r="5" fill="#DDF45B"><animateMotion dur="2.4s" begin="1.9s"  repeatCount="indefinite"><mpath href="#cp-in-2"/></animateMotion></circle>
-
-          <circle r="5" fill="#A8AFFF"><animateMotion dur="2.4s" begin="0.15s" repeatCount="indefinite"><mpath href="#cp-in-3"/></animateMotion></circle>
-          <circle r="5" fill="#A8AFFF"><animateMotion dur="2.4s" begin="0.95s" repeatCount="indefinite"><mpath href="#cp-in-3"/></animateMotion></circle>
-          <circle r="5" fill="#A8AFFF"><animateMotion dur="2.4s" begin="1.75s" repeatCount="indefinite"><mpath href="#cp-in-3"/></animateMotion></circle>
-
-          <circle r="5" fill="#000000"><animateMotion dur="2.4s" begin="0.45s" repeatCount="indefinite"><mpath href="#cp-in-4"/></animateMotion></circle>
-          <circle r="5" fill="#000000"><animateMotion dur="2.4s" begin="1.25s" repeatCount="indefinite"><mpath href="#cp-in-4"/></animateMotion></circle>
-          <circle r="5" fill="#000000"><animateMotion dur="2.4s" begin="2.05s" repeatCount="indefinite"><mpath href="#cp-in-4"/></animateMotion></circle>
-
-          <circle r="5" fill="#1F8A5B"><animateMotion dur="2.4s" begin="0.6s"  repeatCount="indefinite"><mpath href="#cp-in-5"/></animateMotion></circle>
-          <circle r="5" fill="#1F8A5B"><animateMotion dur="2.4s" begin="1.4s"  repeatCount="indefinite"><mpath href="#cp-in-5"/></animateMotion></circle>
-          <circle r="5" fill="#1F8A5B"><animateMotion dur="2.4s" begin="2.2s"  repeatCount="indefinite"><mpath href="#cp-in-5"/></animateMotion></circle>
-
-          <!-- Outbound: lime pulses going to outcomes -->
-          <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="2.2s" begin="0.7s" repeatCount="indefinite"><mpath href="#cp-out-1"/></animateMotion></circle>
-          <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="2.2s" begin="1.8s" repeatCount="indefinite"><mpath href="#cp-out-1"/></animateMotion></circle>
-
-          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite"><mpath href="#cp-out-2"/></animateMotion></circle>
-          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="2.2s" repeatCount="indefinite"><mpath href="#cp-out-2"/></animateMotion></circle>
-
-          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="1.5s" repeatCount="indefinite"><mpath href="#cp-out-3"/></animateMotion></circle>
-          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="2.6s" repeatCount="indefinite"><mpath href="#cp-out-3"/></animateMotion></circle>
-
-          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="1.9s" repeatCount="indefinite"><mpath href="#cp-out-4"/></animateMotion></circle>
-          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="3.0s" repeatCount="indefinite"><mpath href="#cp-out-4"/></animateMotion></circle>
-
-          <!-- Labeled data packets (less frequent, narrative) -->
-          <g class="s-conv__packet">
-            <rect x="-30" y="-9" width="60" height="18" rx="9" fill="#5354ED" stroke="#0c0c1e" stroke-width="1"/>
-            <text x="0" y="3.5" text-anchor="middle" fill="#fff" font-size="10" font-family="Roboto Mono, monospace" font-weight="500" letter-spacing="0.5">SKU-184</text>
-            <animateMotion dur="3.6s" begin="0.3s" repeatCount="indefinite" rotate="0"><mpath href="#cp-in-3"/></animateMotion>
-          </g>
-          <g class="s-conv__packet">
-            <rect x="-26" y="-9" width="52" height="18" rx="9" fill="#DDF45B" stroke="#0c0c1e" stroke-width="1"/>
-            <text x="0" y="3.5" text-anchor="middle" fill="#000" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">$840</text>
-            <animateMotion dur="3.6s" begin="1.8s" repeatCount="indefinite"><mpath href="#cp-in-2"/></animateMotion>
-          </g>
-          <g class="s-conv__packet">
-            <rect x="-22" y="-9" width="44" height="18" rx="9" fill="#fff" stroke="#0c0c1e" stroke-width="1"/>
-            <text x="0" y="3.5" text-anchor="middle" fill="#000" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">OOS</text>
-            <animateMotion dur="3.6s" begin="2.7s" repeatCount="indefinite"><mpath href="#cp-in-1"/></animateMotion>
-          </g>
-
-          <!-- Outbound packets: ranked decisions -->
-          <g class="s-conv__packet">
-            <rect x="-44" y="-10" width="88" height="20" rx="10" fill="#DDF45B" stroke="#0c0c1e" stroke-width="1"/>
-            <text x="0" y="4" text-anchor="middle" fill="#000" font-size="10" font-family="Roboto Mono, monospace" font-weight="700" letter-spacing="0.5">+$840 ↑ RANK 1</text>
-            <animateMotion dur="3.2s" begin="0.8s" repeatCount="indefinite"><mpath href="#cp-out-1"/></animateMotion>
-          </g>
-          <g class="s-conv__packet">
-            <rect x="-36" y="-10" width="72" height="20" rx="10" fill="#0c0c1e" stroke="#5354ED" stroke-width="1"/>
-            <text x="0" y="4" text-anchor="middle" fill="#fff" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">FIX OOS ×5</text>
-            <animateMotion dur="3.2s" begin="1.9s" repeatCount="indefinite"><mpath href="#cp-out-2"/></animateMotion>
-          </g>
-          <g class="s-conv__packet">
-            <rect x="-40" y="-10" width="80" height="20" rx="10" fill="#0c0c1e" stroke="#5354ED" stroke-width="1"/>
-            <text x="0" y="4" text-anchor="middle" fill="#fff" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">PROMO ✓ NS-12</text>
-            <animateMotion dur="3.2s" begin="2.6s" repeatCount="indefinite"><mpath href="#cp-out-3"/></animateMotion>
-          </g>
-          <g class="s-conv__packet">
-            <rect x="-36" y="-10" width="72" height="20" rx="10" fill="#0c0c1e" stroke="#5354ED" stroke-width="1"/>
-            <text x="0" y="4" text-anchor="middle" fill="#fff" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">REP → 1471</text>
-            <animateMotion dur="3.2s" begin="3.3s" repeatCount="indefinite"><mpath href="#cp-out-4"/></animateMotion>
-          </g>
-        </svg>
-
-        <!-- Streams (left) -->
-        <div class="s-conv__streams">
-          <div class="s-conv__stream">
-            <div class="icon">SI</div>
-            <div><p class="lbl">Stream 01 &middot; ERP</p><p class="ttl">Sell-in</p></div>
-            <span class="live"></span>
-          </div>
-          <div class="s-conv__stream">
-            <div class="icon">SO</div>
-            <div><p class="lbl">Stream 02 &middot; PoS</p><p class="ttl">Sell-out</p></div>
-            <span class="live"></span>
-          </div>
-          <div class="s-conv__stream">
-            <div class="icon">SH</div>
-            <div><p class="lbl">Stream 03 &middot; AIR photos</p><p class="ttl">Shelf truth</p></div>
-            <span class="live"></span>
-          </div>
-          <div class="s-conv__stream">
-            <div class="icon">RT</div>
-            <div><p class="lbl">Stream 04 &middot; Field GPS</p><p class="ttl">Route &amp; visit</p></div>
-            <span class="live"></span>
-          </div>
-          <div class="s-conv__stream">
-            <div class="icon">PR</div>
-            <div><p class="lbl">Stream 05 &middot; Calendar</p><p class="ttl">Promo &amp; price</p></div>
-            <span class="live"></span>
-          </div>
-        </div>
-
-        <!-- Core agent orchestrator (center) -->
-        <div class="s-conv__core">
-          <div class="s-conv__coreHead">
-            <div class="s-conv__coreMark">w:</div>
-            <span class="s-conv__coreLbl">Agent orchestrator</span>
-            <span class="s-conv__coreStatus"><span class="d"></span>Live</span>
-          </div>
-
-          <div class="s-conv__coreMeter">
-            <div class="s-conv__coreMeterTop">
-              <span class="l">Throughput</span>
-              <span class="v"><em id="convActions">2,481</em><span class="u">actions / sec</span></span>
-            </div>
-            <div class="s-conv__spark" aria-hidden="true">
-              <span style="--h:42%"></span><span style="--h:58%"></span><span style="--h:36%"></span>
-              <span style="--h:64%"></span><span style="--h:48%"></span><span style="--h:72%"></span>
-              <span style="--h:54%"></span><span style="--h:88%"></span><span style="--h:62%"></span>
-              <span style="--h:76%"></span><span style="--h:44%"></span><span style="--h:82%"></span>
-              <span style="--h:58%"></span><span style="--h:94%"></span><span style="--h:68%"></span>
-              <span style="--h:78%"></span><span style="--h:52%"></span><span style="--h:86%"></span>
-            </div>
-          </div>
-
-          <div class="s-conv__agents">
-            <div class="s-conv__agent">
-              <span class="dot"></span>
-              <span class="nm">oos-detector</span>
-              <span class="rate"><em>3.2k</em>/s</span>
-              <span class="bar"><i style="--w:78%"></i></span>
-            </div>
-            <div class="s-conv__agent">
-              <span class="dot"></span>
-              <span class="nm">planogram-fix</span>
-              <span class="rate"><em>1.8k</em>/s</span>
-              <span class="bar"><i style="--w:54%"></i></span>
-            </div>
-            <div class="s-conv__agent">
-              <span class="dot"></span>
-              <span class="nm">promo-audit</span>
-              <span class="rate"><em>0.9k</em>/s</span>
-              <span class="bar"><i style="--w:32%"></i></span>
-            </div>
-            <div class="s-conv__agent idle">
-              <span class="dot"></span>
-              <span class="nm">route-optimizer</span>
-              <span class="rate">queued</span>
-              <span class="bar"><i style="--w:8%"></i></span>
-            </div>
-          </div>
-
-          <!-- Activity log -->
-          <div class="s-conv__log" aria-hidden="true">
-            <div class="s-conv__logRow r0"><span class="t">12:42:18.901</span><span class="m">photo → <em>store 0412</em></span><span class="v ok">+187 SKUs</span></div>
-            <div class="s-conv__logRow r1"><span class="t">12:42:18.902</span><span class="m">join: sell-out × shelf</span><span class="v ok">+$840</span></div>
-            <div class="s-conv__logRow r2"><span class="t">12:42:18.903</span><span class="m">oos-detector ✓ 5 fixes</span><span class="v hi">ranked</span></div>
-            <div class="s-conv__logRow r3"><span class="t">12:42:18.904</span><span class="m">action → <em>rep 1471</em></span><span class="v hi">pushed</span></div>
-            <div class="s-conv__logRow r4"><span class="t">12:42:18.905</span><span class="m">planogram-fix ✓</span><span class="v ok">+$310</span></div>
-            <div class="s-conv__logRow r5"><span class="t">12:42:18.906</span><span class="m">promo-audit → Nestlé</span><span class="v ok">+$520</span></div>
-          </div>
-        </div>
-
-        <!-- Outcomes (right) -->
-        <div class="s-conv__outcomes">
-          <div class="s-conv__out hero">
-            <p class="v">10×</p>
-            <p class="l">Minimum ROI<br/>in year one</p>
-          </div>
-          <div class="s-conv__out">
-            <p class="v">−42%</p>
-            <p class="l">Out-of-stocks in 60 days</p>
-          </div>
-          <div class="s-conv__out">
-            <p class="v">+18 pts</p>
-            <p class="l">Promo compliance, measured by photo</p>
-          </div>
-          <div class="s-conv__out">
-            <p class="v">−30 min</p>
-            <p class="l">Per store visit, returned to the rep</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="s-conv__legend">
-        <span>Each join becomes a new question your stack can't ask today.</span>
-        <span><strong>Wisy:</strong> the layer above your stack — not another tab inside it.</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====================================================
-       SLIDE 8 — Credibility
-       ==================================================== -->
-  <section data-label="08 Credibility">
-    <div class="s-cred">
-      <div class="s-cred__head">
-        <p class="kicker on-dark"><span class="dot"></span><span>Why this team &middot; Why now</span></p>
-        <h2>Silicon Valley horsepower. <em>Backed by Palantir.</em></h2>
-      </div>
-
-      <div class="s-cred__grid">
-        <div class="s-cred__lead">
-          <p class="kicker"><span class="dot"></span><span>Foundational partner</span></p>
-          <div class="lockup">
-            <div class="wisy">wisy:</div>
-            <div class="x">×</div>
-            <div class="pal">Palantir</div>
-          </div>
-          <p>Built on the same data infrastructure that runs the world's hardest operational problems. Wisy is the <em>first AI-native</em> retail execution platform on top of it.</p>
-        </div>
-
-        <div class="s-cred__flexes">
-          <div class="s-cred__flex">
-            <p class="l">Disruption speed</p>
-            <p class="v">Models that ship <em>week-over-week</em> — not quarter-over-quarter.</p>
-          </div>
-          <div class="s-cred__flex">
-            <p class="l">Free of legacy drag</p>
-            <p class="v">No private-equity stagnation. No 18-month roadmaps.</p>
-          </div>
-          <div class="s-cred__flex">
-            <p class="l">Built for 2026 AI</p>
-            <p class="v">Multimodal, agentic, on-device — designed for what models can do <em>now.</em></p>
-          </div>
-        </div>
-      </div>
-
-      <div class="s-cred__logos">
-        <div class="s-cred__logo">Palantir<small>Data infrastructure</small></div>
-        <div class="s-cred__logo">SV Capital<small>Lead investor</small></div>
-        <div class="s-cred__logo">Foundry<small>Platform partner</small></div>
-        <div class="s-cred__logo">AWS<small>Compute</small></div>
-        <div class="s-cred__logo">NVIDIA<small>Inference</small></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====================================================
-       SLIDE 9 — Social proof
-       ==================================================== -->
-  <section data-label="09 Social proof">
-    <div class="s-proof">
-      <div class="s-proof__photo">
-        <div class="tag"><span class="dot"></span>Deployed &middot; Chile</div>
-        <div class="brandStamp">CCU<span>Largest brewer &middot; Latin America</span></div>
-      </div>
-      <div class="s-proof__right">
-        <div class="s-proof__head">
-          <p class="kicker"><span class="dot"></span><span>Validated in the wild</span></p>
-          <h2>Proven where execution is hardest.</h2>
-        </div>
-
-        <div class="s-proof__quote">
-          <p>Wisy collapsed a 30-minute store audit into <strong>seconds</strong> — and gave our reps the same shelf picture our HQ team sees. We stopped arguing about the data and started fixing the shelf.</p>
-          <div class="meta">
-            <div class="av">JR</div>
-            <div class="who">J. Ramírez<span>VP Field Execution &middot; CCU</span></div>
-          </div>
-        </div>
-
-        <div class="s-proof__quote" style="background: var(--wisy-gray-50);">
-          <p>The first IR vendor where the rep gets value <em>at the shelf</em>, not three weeks later in a PDF.</p>
-          <div class="meta">
-            <div class="av" style="background: var(--wisy-black)">F</div>
-            <div class="who">Director, Trade Marketing<span>Ferrero &middot; LATAM</span></div>
-          </div>
-        </div>
-
-        <div class="s-proof__stats">
-          <div class="s-proof__stat">
-            <p class="v">4,200+</p>
-            <p class="l">Stores scanned monthly across deployed brands</p>
-          </div>
-          <div class="s-proof__stat">
-            <p class="v">1.8M</p>
-            <p class="l">Shelf photos processed by AIR last quarter</p>
-          </div>
-          <div class="s-proof__stat">
-            <p class="v">11</p>
-            <p class="l">Countries live in Latin America &amp; EMEA</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ====================================================
-       SLIDE 10 — Bottom line
-       ==================================================== -->
-  <section data-label="10 Close">
-    <div class="s-close">
-      <div class="s-close__head">
-        <p class="kicker"><span class="dot"></span><span>The bottom line</span></p>
-        <p class="kicker" style="color: var(--fg-3)"><span>wisy:</span></p>
-      </div>
-
-      <div class="s-close__hero">
-        <p class="s-close__num">10<span class="x">×</span><span class="min">Minimum</span></p>
-        <div class="s-close__right">
-          <h2>Projected return on Wisy <em>in year one.</em></h2>
-          <p class="quote">Let our competitors chase next-best-actions. <em>We'll build your scaling intelligence layer.</em></p>
-        </div>
-      </div>
-
-      <div class="s-close__cta">
-        <div class="who">Wisy &middot; AI-native retail execution<span>wisy.ai &nbsp;·&nbsp; hello@wisy.ai</span></div>
-        <div class="next">
-          <span>Next step</span>
-          <span class="btn">Pilot in 30 days &nbsp;→</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-</deck-stage>
-
-<script>
+<style>deck-stage:not(:defined){visibility:hidden}</style>
+<script defer>
 /**
  * <deck-stage> — reusable web component for HTML decks.
  *
@@ -3480,7 +2665,7 @@
  *     <section data-label="Title">...</section>
  *     <section data-label="Agenda">...</section>
  *   </deck-stage>
- *   <script src="deck-stage.js"></script>
+ *   <script src="deck-stage.js"><\/script>
  *
  * The :not(:defined) rule prevents a flash of the first slide at its
  * authored styles before this script runs and attaches the shadow root.
@@ -5168,6 +4353,825 @@
 })();
 
 </script>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- ====================================================
+       SLIDE 1 — Title
+       ==================================================== -->
+  <section data-label="01 Title">
+    <div class="s-title">
+      <div class="s-title__left">
+        <div>
+          <p class="kicker"><span class="dot"></span><span>Wisy &middot; Field deck &middot; 2026</span></p>
+          <h1 class="s-title__wordmark">wisy:</h1>
+        </div>
+        <div class="s-title__hook">
+          <p class="t">From <em>shelf</em> to <em>HQ</em>.<br/>Real-time shelf intelligence.</p>
+          <p class="sub">Photograph the shelf. Wisy ranks the fix list by revenue. Your team acts before they leave the store — your HQ sees it before lunch.</p>
+        </div>
+        <div class="s-title__meta">
+          <span>For CPG &amp; Grocery</span>
+          <span class="bar"></span>
+          <span>5 min</span>
+          <span class="bar"></span>
+          <span>Confidential</span>
+        </div>
+      </div>
+      <div class="s-title__right">
+        <div class="s-title__rightInner">
+          <div class="s-title__mark">w:</div>
+          <div class="s-title__statBlock">
+            <p class="s-title__stat">250 SKUs.<br/>One photo.</p>
+            <p class="s-title__statLbl">The whole shelf, read and ranked — even offline.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 2 — $1.7 trillion
+       ==================================================== -->
+  <section data-label="02 Stakes">
+    <div class="s-stakes">
+      <p class="kicker"><span class="dot"></span><span>The stakes &middot; Global retail execution</span></p>
+
+      <div class="s-stakes__hero">
+        <p class="s-stakes__number">$1.7T<span class="unit"></span></p>
+        <div class="s-stakes__copy">
+          <h2>lost every year to bad retail execution.</h2>
+          <p>For a $1B brand, that's <strong style="color: var(--wisy-lime)">$20M&nbsp;–&nbsp;$50M</strong> walking off the shelf annually. Out-of-stocks. Wrong planogram. Missed promotion. Quiet, daily revenue leak.</p>
+        </div>
+      </div>
+
+      <div class="s-stakes__row">
+        <div class="s-stakes__cell">
+          <p class="n"><span class="accent">1 in 13</span></p>
+          <p class="l">items a shopper looks for is out of stock — and most walk away.</p>
+        </div>
+        <div class="s-stakes__cell">
+          <p class="n"><span class="accent">~70%</span></p>
+          <p class="l">of trade promotions fail to execute at the shelf as planned.</p>
+        </div>
+        <div class="s-stakes__cell">
+          <p class="n"><span class="accent">14&nbsp;days</span></p>
+          <p class="l">average lag from shelf reality to HQ dashboard.</p>
+        </div>
+        <div class="s-stakes__cell quote">
+          <p class="q">“This isn't a technology problem. It's a <strong>data</strong> problem.”</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 3 — Ground reality
+       ==================================================== -->
+  <section data-label="03 Ground reality">
+    <div class="s-ground">
+      <div class="s-ground__photo">
+        <div class="s-ground__rep">
+          <div class="nameRow">
+            <div class="avatar">MR</div>
+            <div class="name">
+              Maria R.
+              <span>Field rep &middot; Store 0412 &middot; 11:42</span>
+            </div>
+          </div>
+          <div class="s-ground__chips">
+            <span class="c">7 active apps</span>
+            <span class="c warn">12 OOS suspected</span>
+            <span class="c">3 promos to audit</span>
+          </div>
+        </div>
+      </div>
+      <div class="s-ground__right">
+        <div class="s-ground__title">
+          <p class="kicker"><span class="dot"></span><span>The ground reality</span></p>
+          <h2>By the time HQ sees the data, the <em>shelf has already changed.</em></h2>
+        </div>
+
+        <div class="s-ground__chaos">
+          <div class="s-ground__chaosRow">
+            <div class="app" style="background: #2a72e0">A</div>
+            <div class="lbl">Audit app — manual photo + tag, 90s per shelf</div>
+            <span class="tag">no AI</span>
+          </div>
+          <div class="s-ground__chaosRow">
+            <div class="app" style="background: #5e2cbf">B</div>
+            <div class="lbl">Route planner — separate login, no shelf context</div>
+            <span class="tag">disconnected</span>
+          </div>
+          <div class="s-ground__chaosRow">
+            <div class="app" style="background: #c0392b">C</div>
+            <div class="lbl">Promo form — paper PDF, signed at checkout</div>
+            <span class="tag">offline only</span>
+          </div>
+        </div>
+
+        <p class="s-ground__quote">Reps drown in tabs, guess what matters, and leave. The opportunity is <em>gone</em> before the photo reaches HQ.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 4 — AIR
+       ==================================================== -->
+  <section data-label="04 AIR">
+    <div class="s-air">
+      <div class="s-air__left">
+        <div>
+          <p class="kicker"><span class="dot"></span><span>Product 01 &middot; The capture layer</span></p>
+          <div class="s-air__brand">
+            <div class="name">AIR<span style="color: var(--wisy-black); font-size: 60px; vertical-align: 18px;">.</span></div>
+            <div class="expand">Agentic<br/>Image<br/>Recognition</div>
+          </div>
+          <p class="s-air__pitch">The <em>cheapest robot</em> on every shelf — it lives in the rep's pocket.</p>
+        </div>
+
+        <div>
+          <div class="s-air__bars">
+            <div class="s-air__bar legacy">
+              <div class="row">
+                <span class="l">Legacy image recognition</span>
+                <span class="r">Stops at HQ</span>
+              </div>
+              <div class="track"><div class="fill"></div></div>
+            </div>
+            <div class="s-air__bar air">
+              <div class="row">
+                <span class="l">AIR — agentic, multimodal</span>
+                <span class="r">Action at the shelf</span>
+              </div>
+              <div class="track"><div class="fill"></div></div>
+            </div>
+          </div>
+
+          <div class="s-air__caps">
+            <span class="s-air__cap">Phones &amp; tablets</span>
+            <span class="s-air__cap">Cooler cameras</span>
+            <span class="s-air__cap">IoT sensors</span>
+            <span class="s-air__cap">Offline-first</span>
+            <span class="s-air__cap">Built for 2026 AI</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="s-air__right">
+        <div class="s-air__hub">
+          <svg class="s-air__hubSvg" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <path id="airL1" d="M500,500 L500,170"/>
+              <path id="airL2" d="M500,500 L814,398"/>
+              <path id="airL3" d="M500,500 L694,766"/>
+              <path id="airL4" d="M500,500 L306,766"/>
+              <path id="airL5" d="M500,500 L186,398"/>
+            </defs>
+
+            <use href="#airL1" class="s-air__hubPath"/>
+            <use href="#airL2" class="s-air__hubPath"/>
+            <use href="#airL3" class="s-air__hubPath"/>
+            <use href="#airL4" class="s-air__hubPath"/>
+            <use href="#airL5" class="s-air__hubPath"/>
+            <use href="#airL1" class="s-air__hubPathLive"/>
+            <use href="#airL2" class="s-air__hubPathLive" style="animation-delay:-150ms"/>
+            <use href="#airL3" class="s-air__hubPathLive" style="animation-delay:-300ms"/>
+            <use href="#airL4" class="s-air__hubPathLive" style="animation-delay:-450ms"/>
+            <use href="#airL5" class="s-air__hubPathLive" style="animation-delay:-600ms"/>
+
+            <!-- Pulses traveling from device → core (reversed direction via keyPoints 1→0) -->
+            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="0s"   repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL1"/></animateMotion></circle>
+            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="0.4s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL2"/></animateMotion></circle>
+            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="0.8s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL3"/></animateMotion></circle>
+            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="1.2s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL4"/></animateMotion></circle>
+            <circle r="6" fill="#5354ED"><animateMotion dur="1.8s" begin="1.6s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL5"/></animateMotion></circle>
+
+            <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="1.8s" begin="0.2s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL1"/></animateMotion></circle>
+            <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="1.8s" begin="0.6s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL3"/></animateMotion></circle>
+            <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="1.8s" begin="1.0s" repeatCount="indefinite" keyTimes="0;1" keyPoints="1;0"><mpath href="#airL5"/></animateMotion></circle>
+          </svg>
+
+          <!-- Center AIR core -->
+          <div class="s-air__core">
+            <span class="s-air__coreLbl">Capture layer</span>
+            <span class="s-air__coreMark">AIR</span>
+            <span class="s-air__coreStatus"><span class="d"></span>Multimodal</span>
+          </div>
+
+          <!-- Device 1: Phone (top) -->
+          <div class="s-air__dev d1" style="left:50%; top:17%;">
+            <div class="s-air__devIcon">
+              <svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><line x1="10.5" y1="18.5" x2="13.5" y2="18.5"/><line x1="10" y1="4.5" x2="14" y2="4.5"/></svg>
+            </div>
+            <div class="s-air__devLbl">Phone</div>
+            <div class="s-air__devMeta">iOS / Android</div>
+            <div class="s-air__devOnline"><span class="d"></span>Live</div>
+          </div>
+
+          <!-- Device 2: Tablet (right) -->
+          <div class="s-air__dev d2" style="left:81.4%; top:39.8%;">
+            <div class="s-air__devIcon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2.2"/><line x1="11" y1="17" x2="13" y2="17"/></svg>
+            </div>
+            <div class="s-air__devLbl">Tablet</div>
+            <div class="s-air__devMeta">In-store kiosk</div>
+            <div class="s-air__devOnline"><span class="d"></span>Live</div>
+          </div>
+
+          <!-- Device 3: IoT (bottom-right) -->
+          <div class="s-air__dev d3" style="left:69.4%; top:76.6%;">
+            <div class="s-air__devIcon">
+              <svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="11" rx="2"/><path d="M9 7 V4.5"/><path d="M15 7 V4.5"/><circle cx="9" cy="12.5" r="1"/><circle cx="15" cy="12.5" r="1"/><line x1="8" y1="21" x2="16" y2="21"/></svg>
+            </div>
+            <div class="s-air__devLbl">IoT sensor</div>
+            <div class="s-air__devMeta">Shelf + weight</div>
+            <div class="s-air__devOnline"><span class="d"></span>Live</div>
+          </div>
+
+          <!-- Device 4: Cooler camera (bottom-left) -->
+          <div class="s-air__dev d4" style="left:30.6%; top:76.6%;">
+            <div class="s-air__devIcon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7 L9.5 4.5 H14.5 L16 7"/><circle cx="12" cy="13.5" r="3.2"/><circle cx="12" cy="13.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <div class="s-air__devLbl">Cooler camera</div>
+            <div class="s-air__devMeta">Always-on shelf</div>
+            <div class="s-air__devOnline"><span class="d"></span>Live</div>
+          </div>
+
+          <!-- Device 5: Meta glasses (left) -->
+          <div class="s-air__dev d5" style="left:18.6%; top:39.8%;">
+            <div class="s-air__devIcon">
+              <svg viewBox="0 0 24 24"><circle cx="6.5" cy="14.5" r="3.8"/><circle cx="17.5" cy="14.5" r="3.8"/><path d="M10.3 14 L13.7 14"/><path d="M2.5 12 L4 11"/><path d="M21.5 12 L20 11"/></svg>
+            </div>
+            <div class="s-air__devLbl">Meta Glasses</div>
+            <div class="s-air__devMeta">Hands-free capture</div>
+            <div class="s-air__devOnline"><span class="d"></span>Live</div>
+          </div>
+        </div>
+
+        <div class="s-air__caption">
+          <span class="lbl">· AIR network</span>
+          <span>5 device classes · <em>one</em> capture layer · <span class="v">offline-first</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 5 — Agents
+       ==================================================== -->
+  <section data-label="05 Agents">
+    <div class="s-agents">
+      <div class="s-agents__head">
+        <div>
+          <p class="kicker"><span class="dot"></span><span>Product 02 &middot; The action layer</span></p>
+          <h2>An <em>AI teammate</em> in every rep's pocket — three ranked actions, every visit.</h2>
+        </div>
+        <p>Raw data is noise. Wisy's Agents apply your business rules to every photo and surface the three highest-revenue actions before the rep leaves the aisle.</p>
+      </div>
+
+      <div class="s-agents__flow">
+        <!-- Left: phone -->
+        <div class="s-agents__phone">
+          <div class="s-agents__phoneScreen">
+            <div class="s-agents__phoneHead">
+              <span class="b">wisy:</span>
+              <span class="t">Store 0412 &middot; Aisle 4</span>
+            </div>
+            <div class="s-agents__photoCap"><span class="check">Captured</span></div>
+            <p class="s-agents__phoneSub">Next best actions &middot; ranked by revenue</p>
+            <div class="s-agents__action top">
+              <div class="ahdr"><span>01 &middot; Refill</span><span class="pri">Priority</span></div>
+              <div class="ttl">Restock Coca-Cola 600ml — 4 facings missing</div>
+              <div class="rev">+$840 / visit</div>
+            </div>
+            <div class="s-agents__action">
+              <div class="ahdr"><span>02 &middot; Compliance</span><span>Promo</span></div>
+              <div class="ttl">Rebuild promo end-cap — Nestlé summer block</div>
+              <div class="rev">+$520 / visit</div>
+            </div>
+            <div class="s-agents__action">
+              <div class="ahdr"><span>03 &middot; Planogram</span><span>Fix</span></div>
+              <div class="ttl">Swap shelf 3 — competitor in your slot</div>
+              <div class="rev">+$310 / visit</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle: pipeline -->
+        <div class="s-agents__pipe">
+          <div class="s-agents__step">
+            <div class="num">1</div>
+            <div class="body">
+              <p class="lbl">Capture</p>
+              <p class="t">One photo of the shelf</p>
+            </div>
+            <span class="time">0:00</span>
+          </div>
+          <div class="s-agents__pipeArrow">↓</div>
+          <div class="s-agents__step">
+            <div class="num indigo">2</div>
+            <div class="body">
+              <p class="lbl">Apply rules</p>
+              <p class="t">Brand &times; planogram &times; promo &times; price</p>
+            </div>
+            <span class="time">0:01</span>
+          </div>
+          <div class="s-agents__pipeArrow">↓</div>
+          <div class="s-agents__step">
+            <div class="num lime">3</div>
+            <div class="body">
+              <p class="lbl">Rank &amp; act</p>
+              <p class="t"><em>Three</em> revenue-ranked next actions</p>
+            </div>
+            <span class="time">0:02</span>
+          </div>
+        </div>
+
+        <!-- Right: outcomes -->
+        <div class="s-agents__out">
+          <h3>What it changes for the rep</h3>
+          <div class="s-agents__outCard">
+            <p class="v">30min<span class="small"> → 0</span></p>
+            <p class="l">Time spent guessing what matters at this store today</p>
+          </div>
+          <div class="s-agents__outCard">
+            <p class="v">+25%</p>
+            <p class="l">Field-team efficiency, measured by actions closed per visit</p>
+          </div>
+          <div class="s-agents__outCard dark">
+            <p class="v">3 / visit</p>
+            <p class="l">High-confidence fixes, ranked by recovered revenue</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 6 — HQI
+       ==================================================== -->
+  <section data-label="06 HQI">
+    <div class="s-hqi">
+      <div class="s-hqi__head">
+        <div>
+          <p class="kicker"><span class="dot"></span><span>Product 03 &middot; The intelligence layer</span></p>
+          <h2><em>HQI</em> — the shelf, wired straight to HQ.</h2>
+        </div>
+        <p>Not a dashboard. Not BI. <strong>HQI</strong> is the intelligence layer that pulls every shelf in every store into one live operating picture — and pushes actions back down.</p>
+      </div>
+
+      <div class="s-hqi__mac" style="position: relative;">
+        <div class="s-hqi__macBar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url">hq.wisy.ai &nbsp;/&nbsp; <b>execution / live</b></span>
+        </div>
+        <div class="s-hqi__app">
+          <div class="s-hqi__sidebar">
+            <div class="logo">wisy:</div>
+            <div class="nav active"><span class="ic"></span>Live execution</div>
+            <div class="nav"><span class="ic"></span>Share of shelf</div>
+            <div class="nav"><span class="ic"></span>Out of stock</div>
+            <div class="nav"><span class="ic"></span>Planogram</div>
+            <div class="nav"><span class="ic"></span>Promotions</div>
+            <div class="nav"><span class="ic"></span>Field team</div>
+            <div class="nav"><span class="ic"></span>Routes</div>
+            <div class="nav"><span class="ic"></span>Reports</div>
+          </div>
+          <div class="s-hqi__main">
+            <div class="s-hqi__topRow">
+              <h3>Live execution <span>&middot; Latin America &middot; 4,212 stores</span></h3>
+              <span class="live">Live &middot; 2s lag</span>
+            </div>
+            <div class="s-hqi__kpis">
+              <div class="s-hqi__kpi">
+                <p class="l">On-shelf availability</p>
+                <p class="v">94.1<small style="font-size: 22px">%</small></p>
+                <p class="d">▲ 2.4 vs. last week</p>
+              </div>
+              <div class="s-hqi__kpi">
+                <p class="l">Share of shelf</p>
+                <p class="v">38.6<small style="font-size: 22px">%</small></p>
+                <p class="d">▲ 1.1</p>
+              </div>
+              <div class="s-hqi__kpi">
+                <p class="l">Promo compliance</p>
+                <p class="v">81<small style="font-size: 22px">%</small></p>
+                <p class="d bad">▼ 3.2 — Region 04</p>
+              </div>
+              <div class="s-hqi__kpi">
+                <p class="l">Revenue at risk</p>
+                <p class="v">$184<small style="font-size: 22px">K</small></p>
+                <p class="d">recoverable this week</p>
+              </div>
+            </div>
+
+            <div class="s-hqi__panels">
+              <div class="s-hqi__panel">
+                <h4>Compliance heatmap — by store cluster<span class="pill">last 24h</span></h4>
+                <div class="s-hqi__heat" id="heat"></div>
+              </div>
+              <div class="s-hqi__panel">
+                <h4>Ranked alerts — push to field<span class="pill">12 open</span></h4>
+                <div class="s-hqi__alerts">
+                  <div class="s-hqi__alert danger">
+                    <span class="bar"></span>
+                    <div class="body">OOS cluster — Coca-Cola 2L, 38 stores São Paulo<small>Region 02 &middot; opened 4m ago</small></div>
+                    <span class="rev">+$42K</span>
+                  </div>
+                  <div class="s-hqi__alert warn">
+                    <span class="bar"></span>
+                    <div class="body">Promo block missing — Nestlé summer end-cap<small>Region 04 &middot; 21 stores</small></div>
+                    <span class="rev">+$28K</span>
+                  </div>
+                  <div class="s-hqi__alert">
+                    <span class="bar"></span>
+                    <div class="body">Competitor encroachment — shelf 3, Carrefour SP<small>14 stores &middot; planogram drift</small></div>
+                    <span class="rev">+$19K</span>
+                  </div>
+                  <div class="s-hqi__alert warn">
+                    <span class="bar"></span>
+                    <div class="body">Price mismatch vs. PoS — Ferrero Rocher T16<small>Chile &middot; 9 stores</small></div>
+                    <span class="rev">+$12K</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 7 — Agentic flow / Convergence
+       ==================================================== -->
+  <section data-label="07 Convergence">
+    <div class="s-conv">
+      <div class="s-conv__head">
+        <p class="kicker"><span class="dot"></span><span>The agentic layer &middot; Data convergence</span></p>
+        <h2>A fleet of agents, joining your stack into <em>one continuous decision.</em></h2>
+        <p>Most retail tools own one workflow. Wisy runs a swarm of specialised agents across sell-in, sell-out, shelf, route and promo — joining them in real time, ranking what matters, and pushing the action to the rep.</p>
+      </div>
+
+      <div class="s-conv__diagram">
+        <!-- SVG layer: connection paths + traveling pulses -->
+        <svg class="s-conv__svg" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <path id="cp-in-1" d="M214,171 C320,171 320,300 393,300"/>
+            <path id="cp-in-2" d="M214,235 C320,235 340,300 393,300"/>
+            <path id="cp-in-3" d="M214,300 L393,300"/>
+            <path id="cp-in-4" d="M214,365 C320,365 340,300 393,300"/>
+            <path id="cp-in-5" d="M214,429 C320,429 320,300 393,300"/>
+            <path id="cp-out-1" d="M607,300 C680,300 680,192 762,192"/>
+            <path id="cp-out-2" d="M607,300 C680,300 680,270 762,270"/>
+            <path id="cp-out-3" d="M607,300 C680,300 680,348 762,348"/>
+            <path id="cp-out-4" d="M607,300 C680,300 680,426 762,426"/>
+          </defs>
+
+          <!-- Static path lines -->
+          <use href="#cp-in-1" class="s-conv__path"/>
+          <use href="#cp-in-2" class="s-conv__path"/>
+          <use href="#cp-in-3" class="s-conv__path"/>
+          <use href="#cp-in-4" class="s-conv__path"/>
+          <use href="#cp-in-5" class="s-conv__path"/>
+          <use href="#cp-out-1" class="s-conv__path out"/>
+          <use href="#cp-out-2" class="s-conv__path out"/>
+          <use href="#cp-out-3" class="s-conv__path out"/>
+          <use href="#cp-out-4" class="s-conv__path out"/>
+
+          <!-- Animated dashed flow on top -->
+          <use href="#cp-in-1" class="s-conv__pathLive"/>
+          <use href="#cp-in-2" class="s-conv__pathLive" style="animation-delay:-200ms"/>
+          <use href="#cp-in-3" class="s-conv__pathLive" style="animation-delay:-400ms"/>
+          <use href="#cp-in-4" class="s-conv__pathLive" style="animation-delay:-600ms"/>
+          <use href="#cp-in-5" class="s-conv__pathLive" style="animation-delay:-800ms"/>
+          <use href="#cp-out-1" class="s-conv__pathLive out" style="animation-delay:-200ms"/>
+          <use href="#cp-out-2" class="s-conv__pathLive out" style="animation-delay:-500ms"/>
+          <use href="#cp-out-3" class="s-conv__pathLive out" style="animation-delay:-800ms"/>
+          <use href="#cp-out-4" class="s-conv__pathLive out" style="animation-delay:-1100ms"/>
+
+          <!-- Traveling token pulses: 3 per inbound path, staggered -->
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.4s" begin="0s"    repeatCount="indefinite"><mpath href="#cp-in-1"/></animateMotion></circle>
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.4s" begin="0.8s"  repeatCount="indefinite"><mpath href="#cp-in-1"/></animateMotion></circle>
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.4s" begin="1.6s"  repeatCount="indefinite"><mpath href="#cp-in-1"/></animateMotion></circle>
+
+          <circle r="5" fill="#DDF45B"><animateMotion dur="2.4s" begin="0.3s"  repeatCount="indefinite"><mpath href="#cp-in-2"/></animateMotion></circle>
+          <circle r="5" fill="#DDF45B"><animateMotion dur="2.4s" begin="1.1s"  repeatCount="indefinite"><mpath href="#cp-in-2"/></animateMotion></circle>
+          <circle r="5" fill="#DDF45B"><animateMotion dur="2.4s" begin="1.9s"  repeatCount="indefinite"><mpath href="#cp-in-2"/></animateMotion></circle>
+
+          <circle r="5" fill="#A8AFFF"><animateMotion dur="2.4s" begin="0.15s" repeatCount="indefinite"><mpath href="#cp-in-3"/></animateMotion></circle>
+          <circle r="5" fill="#A8AFFF"><animateMotion dur="2.4s" begin="0.95s" repeatCount="indefinite"><mpath href="#cp-in-3"/></animateMotion></circle>
+          <circle r="5" fill="#A8AFFF"><animateMotion dur="2.4s" begin="1.75s" repeatCount="indefinite"><mpath href="#cp-in-3"/></animateMotion></circle>
+
+          <circle r="5" fill="#000000"><animateMotion dur="2.4s" begin="0.45s" repeatCount="indefinite"><mpath href="#cp-in-4"/></animateMotion></circle>
+          <circle r="5" fill="#000000"><animateMotion dur="2.4s" begin="1.25s" repeatCount="indefinite"><mpath href="#cp-in-4"/></animateMotion></circle>
+          <circle r="5" fill="#000000"><animateMotion dur="2.4s" begin="2.05s" repeatCount="indefinite"><mpath href="#cp-in-4"/></animateMotion></circle>
+
+          <circle r="5" fill="#1F8A5B"><animateMotion dur="2.4s" begin="0.6s"  repeatCount="indefinite"><mpath href="#cp-in-5"/></animateMotion></circle>
+          <circle r="5" fill="#1F8A5B"><animateMotion dur="2.4s" begin="1.4s"  repeatCount="indefinite"><mpath href="#cp-in-5"/></animateMotion></circle>
+          <circle r="5" fill="#1F8A5B"><animateMotion dur="2.4s" begin="2.2s"  repeatCount="indefinite"><mpath href="#cp-in-5"/></animateMotion></circle>
+
+          <!-- Outbound: lime pulses going to outcomes -->
+          <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="2.2s" begin="0.7s" repeatCount="indefinite"><mpath href="#cp-out-1"/></animateMotion></circle>
+          <circle r="6" fill="#DDF45B" stroke="#000" stroke-width="1"><animateMotion dur="2.2s" begin="1.8s" repeatCount="indefinite"><mpath href="#cp-out-1"/></animateMotion></circle>
+
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite"><mpath href="#cp-out-2"/></animateMotion></circle>
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="2.2s" repeatCount="indefinite"><mpath href="#cp-out-2"/></animateMotion></circle>
+
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="1.5s" repeatCount="indefinite"><mpath href="#cp-out-3"/></animateMotion></circle>
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="2.6s" repeatCount="indefinite"><mpath href="#cp-out-3"/></animateMotion></circle>
+
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="1.9s" repeatCount="indefinite"><mpath href="#cp-out-4"/></animateMotion></circle>
+          <circle r="5" fill="#5354ED"><animateMotion dur="2.2s" begin="3.0s" repeatCount="indefinite"><mpath href="#cp-out-4"/></animateMotion></circle>
+
+          <!-- Labeled data packets (less frequent, narrative) -->
+          <g class="s-conv__packet">
+            <rect x="-30" y="-9" width="60" height="18" rx="9" fill="#5354ED" stroke="#0c0c1e" stroke-width="1"/>
+            <text x="0" y="3.5" text-anchor="middle" fill="#fff" font-size="10" font-family="Roboto Mono, monospace" font-weight="500" letter-spacing="0.5">SKU-184</text>
+            <animateMotion dur="3.6s" begin="0.3s" repeatCount="indefinite" rotate="0"><mpath href="#cp-in-3"/></animateMotion>
+          </g>
+          <g class="s-conv__packet">
+            <rect x="-26" y="-9" width="52" height="18" rx="9" fill="#DDF45B" stroke="#0c0c1e" stroke-width="1"/>
+            <text x="0" y="3.5" text-anchor="middle" fill="#000" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">$840</text>
+            <animateMotion dur="3.6s" begin="1.8s" repeatCount="indefinite"><mpath href="#cp-in-2"/></animateMotion>
+          </g>
+          <g class="s-conv__packet">
+            <rect x="-22" y="-9" width="44" height="18" rx="9" fill="#fff" stroke="#0c0c1e" stroke-width="1"/>
+            <text x="0" y="3.5" text-anchor="middle" fill="#000" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">OOS</text>
+            <animateMotion dur="3.6s" begin="2.7s" repeatCount="indefinite"><mpath href="#cp-in-1"/></animateMotion>
+          </g>
+
+          <!-- Outbound packets: ranked decisions -->
+          <g class="s-conv__packet">
+            <rect x="-44" y="-10" width="88" height="20" rx="10" fill="#DDF45B" stroke="#0c0c1e" stroke-width="1"/>
+            <text x="0" y="4" text-anchor="middle" fill="#000" font-size="10" font-family="Roboto Mono, monospace" font-weight="700" letter-spacing="0.5">+$840 ↑ RANK 1</text>
+            <animateMotion dur="3.2s" begin="0.8s" repeatCount="indefinite"><mpath href="#cp-out-1"/></animateMotion>
+          </g>
+          <g class="s-conv__packet">
+            <rect x="-36" y="-10" width="72" height="20" rx="10" fill="#0c0c1e" stroke="#5354ED" stroke-width="1"/>
+            <text x="0" y="4" text-anchor="middle" fill="#fff" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">FIX OOS ×5</text>
+            <animateMotion dur="3.2s" begin="1.9s" repeatCount="indefinite"><mpath href="#cp-out-2"/></animateMotion>
+          </g>
+          <g class="s-conv__packet">
+            <rect x="-40" y="-10" width="80" height="20" rx="10" fill="#0c0c1e" stroke="#5354ED" stroke-width="1"/>
+            <text x="0" y="4" text-anchor="middle" fill="#fff" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">PROMO ✓ NS-12</text>
+            <animateMotion dur="3.2s" begin="2.6s" repeatCount="indefinite"><mpath href="#cp-out-3"/></animateMotion>
+          </g>
+          <g class="s-conv__packet">
+            <rect x="-36" y="-10" width="72" height="20" rx="10" fill="#0c0c1e" stroke="#5354ED" stroke-width="1"/>
+            <text x="0" y="4" text-anchor="middle" fill="#fff" font-size="10" font-family="Roboto Mono, monospace" font-weight="600" letter-spacing="0.5">REP → 1471</text>
+            <animateMotion dur="3.2s" begin="3.3s" repeatCount="indefinite"><mpath href="#cp-out-4"/></animateMotion>
+          </g>
+        </svg>
+
+        <!-- Streams (left) -->
+        <div class="s-conv__streams">
+          <div class="s-conv__stream">
+            <div class="icon">SI</div>
+            <div><p class="lbl">Stream 01 &middot; ERP</p><p class="ttl">Sell-in</p></div>
+            <span class="live"></span>
+          </div>
+          <div class="s-conv__stream">
+            <div class="icon">SO</div>
+            <div><p class="lbl">Stream 02 &middot; PoS</p><p class="ttl">Sell-out</p></div>
+            <span class="live"></span>
+          </div>
+          <div class="s-conv__stream">
+            <div class="icon">SH</div>
+            <div><p class="lbl">Stream 03 &middot; AIR photos</p><p class="ttl">Shelf truth</p></div>
+            <span class="live"></span>
+          </div>
+          <div class="s-conv__stream">
+            <div class="icon">RT</div>
+            <div><p class="lbl">Stream 04 &middot; Field GPS</p><p class="ttl">Route &amp; visit</p></div>
+            <span class="live"></span>
+          </div>
+          <div class="s-conv__stream">
+            <div class="icon">PR</div>
+            <div><p class="lbl">Stream 05 &middot; Calendar</p><p class="ttl">Promo &amp; price</p></div>
+            <span class="live"></span>
+          </div>
+        </div>
+
+        <!-- Core agent orchestrator (center) -->
+        <div class="s-conv__core">
+          <div class="s-conv__coreHead">
+            <div class="s-conv__coreMark">w:</div>
+            <span class="s-conv__coreLbl">Agent orchestrator</span>
+            <span class="s-conv__coreStatus"><span class="d"></span>Live</span>
+          </div>
+
+          <div class="s-conv__coreMeter">
+            <div class="s-conv__coreMeterTop">
+              <span class="l">Throughput</span>
+              <span class="v"><em id="convActions">2,481</em><span class="u">actions / sec</span></span>
+            </div>
+            <div class="s-conv__spark" aria-hidden="true">
+              <span style="--h:42%"></span><span style="--h:58%"></span><span style="--h:36%"></span>
+              <span style="--h:64%"></span><span style="--h:48%"></span><span style="--h:72%"></span>
+              <span style="--h:54%"></span><span style="--h:88%"></span><span style="--h:62%"></span>
+              <span style="--h:76%"></span><span style="--h:44%"></span><span style="--h:82%"></span>
+              <span style="--h:58%"></span><span style="--h:94%"></span><span style="--h:68%"></span>
+              <span style="--h:78%"></span><span style="--h:52%"></span><span style="--h:86%"></span>
+            </div>
+          </div>
+
+          <div class="s-conv__agents">
+            <div class="s-conv__agent">
+              <span class="dot"></span>
+              <span class="nm">oos-detector</span>
+              <span class="rate"><em>3.2k</em>/s</span>
+              <span class="bar"><i style="--w:78%"></i></span>
+            </div>
+            <div class="s-conv__agent">
+              <span class="dot"></span>
+              <span class="nm">planogram-fix</span>
+              <span class="rate"><em>1.8k</em>/s</span>
+              <span class="bar"><i style="--w:54%"></i></span>
+            </div>
+            <div class="s-conv__agent">
+              <span class="dot"></span>
+              <span class="nm">promo-audit</span>
+              <span class="rate"><em>0.9k</em>/s</span>
+              <span class="bar"><i style="--w:32%"></i></span>
+            </div>
+            <div class="s-conv__agent idle">
+              <span class="dot"></span>
+              <span class="nm">route-optimizer</span>
+              <span class="rate">queued</span>
+              <span class="bar"><i style="--w:8%"></i></span>
+            </div>
+          </div>
+
+          <!-- Activity log -->
+          <div class="s-conv__log" aria-hidden="true">
+            <div class="s-conv__logRow r0"><span class="t">12:42:18.901</span><span class="m">photo → <em>store 0412</em></span><span class="v ok">+187 SKUs</span></div>
+            <div class="s-conv__logRow r1"><span class="t">12:42:18.902</span><span class="m">join: sell-out × shelf</span><span class="v ok">+$840</span></div>
+            <div class="s-conv__logRow r2"><span class="t">12:42:18.903</span><span class="m">oos-detector ✓ 5 fixes</span><span class="v hi">ranked</span></div>
+            <div class="s-conv__logRow r3"><span class="t">12:42:18.904</span><span class="m">action → <em>rep 1471</em></span><span class="v hi">pushed</span></div>
+            <div class="s-conv__logRow r4"><span class="t">12:42:18.905</span><span class="m">planogram-fix ✓</span><span class="v ok">+$310</span></div>
+            <div class="s-conv__logRow r5"><span class="t">12:42:18.906</span><span class="m">promo-audit → Nestlé</span><span class="v ok">+$520</span></div>
+          </div>
+        </div>
+
+        <!-- Outcomes (right) -->
+        <div class="s-conv__outcomes">
+          <div class="s-conv__out hero">
+            <p class="v">10×</p>
+            <p class="l">Minimum ROI<br/>in year one</p>
+          </div>
+          <div class="s-conv__out">
+            <p class="v">−42%</p>
+            <p class="l">Out-of-stocks in 60 days</p>
+          </div>
+          <div class="s-conv__out">
+            <p class="v">+18 pts</p>
+            <p class="l">Promo compliance, measured by photo</p>
+          </div>
+          <div class="s-conv__out">
+            <p class="v">−30 min</p>
+            <p class="l">Per store visit, returned to the rep</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="s-conv__legend">
+        <span>Each join becomes a new question your stack can't ask today.</span>
+        <span><strong>Wisy:</strong> the layer above your stack — not another tab inside it.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 8 — Credibility
+       ==================================================== -->
+  <section data-label="08 Credibility">
+    <div class="s-cred">
+      <div class="s-cred__head">
+        <p class="kicker on-dark"><span class="dot"></span><span>Why this team &middot; Why now</span></p>
+        <h2>Silicon Valley horsepower. <em>Backed by Palantir.</em></h2>
+      </div>
+
+      <div class="s-cred__grid">
+        <div class="s-cred__lead">
+          <p class="kicker"><span class="dot"></span><span>Foundational partner</span></p>
+          <div class="lockup">
+            <div class="wisy">wisy:</div>
+            <div class="x">×</div>
+            <div class="pal">Palantir</div>
+          </div>
+          <p>Built on the same data infrastructure that runs the world's hardest operational problems. Wisy is the <em>first AI-native</em> retail execution platform on top of it.</p>
+        </div>
+
+        <div class="s-cred__flexes">
+          <div class="s-cred__flex">
+            <p class="l">Disruption speed</p>
+            <p class="v">Models that ship <em>week-over-week</em> — not quarter-over-quarter.</p>
+          </div>
+          <div class="s-cred__flex">
+            <p class="l">Free of legacy drag</p>
+            <p class="v">No private-equity stagnation. No 18-month roadmaps.</p>
+          </div>
+          <div class="s-cred__flex">
+            <p class="l">Built for 2026 AI</p>
+            <p class="v">Multimodal, agentic, on-device — designed for what models can do <em>now.</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="s-cred__logos">
+        <div class="s-cred__logo">Palantir<small>Data infrastructure</small></div>
+        <div class="s-cred__logo">SV Capital<small>Lead investor</small></div>
+        <div class="s-cred__logo">Foundry<small>Platform partner</small></div>
+        <div class="s-cred__logo">AWS<small>Compute</small></div>
+        <div class="s-cred__logo">NVIDIA<small>Inference</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 9 — Social proof
+       ==================================================== -->
+  <section data-label="09 Social proof">
+    <div class="s-proof">
+      <div class="s-proof__photo">
+        <div class="tag"><span class="dot"></span>Deployed &middot; Chile</div>
+        <div class="brandStamp">CCU<span>Largest brewer &middot; Latin America</span></div>
+      </div>
+      <div class="s-proof__right">
+        <div class="s-proof__head">
+          <p class="kicker"><span class="dot"></span><span>Validated in the wild</span></p>
+          <h2>Proven where execution is hardest.</h2>
+        </div>
+
+        <div class="s-proof__quote">
+          <p>Wisy collapsed a 30-minute store audit into <strong>seconds</strong> — and gave our reps the same shelf picture our HQ team sees. We stopped arguing about the data and started fixing the shelf.</p>
+          <div class="meta">
+            <div class="av">JR</div>
+            <div class="who">J. Ramírez<span>VP Field Execution &middot; CCU</span></div>
+          </div>
+        </div>
+
+        <div class="s-proof__quote" style="background: var(--wisy-gray-50);">
+          <p>The first IR vendor where the rep gets value <em>at the shelf</em>, not three weeks later in a PDF.</p>
+          <div class="meta">
+            <div class="av" style="background: var(--wisy-black)">F</div>
+            <div class="who">Director, Trade Marketing<span>Ferrero &middot; LATAM</span></div>
+          </div>
+        </div>
+
+        <div class="s-proof__stats">
+          <div class="s-proof__stat">
+            <p class="v">4,200+</p>
+            <p class="l">Stores scanned monthly across deployed brands</p>
+          </div>
+          <div class="s-proof__stat">
+            <p class="v">1.8M</p>
+            <p class="l">Shelf photos processed by AIR last quarter</p>
+          </div>
+          <div class="s-proof__stat">
+            <p class="v">11</p>
+            <p class="l">Countries live in Latin America &amp; EMEA</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       SLIDE 10 — Bottom line
+       ==================================================== -->
+  <section data-label="10 Close">
+    <div class="s-close">
+      <div class="s-close__head">
+        <p class="kicker"><span class="dot"></span><span>The bottom line</span></p>
+        <p class="kicker" style="color: var(--fg-3)"><span>wisy:</span></p>
+      </div>
+
+      <div class="s-close__hero">
+        <p class="s-close__num">10<span class="x">×</span><span class="min">Minimum</span></p>
+        <div class="s-close__right">
+          <h2>Projected return on Wisy <em>in year one.</em></h2>
+          <p class="quote">Let our competitors chase next-best-actions. <em>We'll build your scaling intelligence layer.</em></p>
+        </div>
+      </div>
+
+      <div class="s-close__cta">
+        <div class="who">Wisy &middot; AI-native retail execution<span>wisy.ai &nbsp;·&nbsp; hello@wisy.ai</span></div>
+        <div class="next">
+          <span>Next step</span>
+          <span class="btn">Pilot in 30 days &nbsp;→</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</deck-stage>
+
 <script>
   // Live ticking counter inside the Agent Orchestrator (slide 7)
   (function tickActions(){
