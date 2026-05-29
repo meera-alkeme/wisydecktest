@@ -2556,7 +2556,7 @@ checkout</div>
             <div class="name">AIR<span style="color: var(--wisy-black); font-size: 60px; vertical-align: 18px;">.</span></div>
             <div class="expand">Agentic<br/>Image<br/>Recognition</div>
           </div>
-          <p class="s-air__pitch">The <em>cheapest robot</em> on every shelf, lives in the rep's pocket.</p>
+          <p class="s-air__pitch"></p>
         </div>
 
         <div>
@@ -2696,7 +2696,7 @@ checkout</div>
       <div class="s-agents__head">
         <div>
           <p class="kicker"><span class="dot"></span><span>Product 02 &middot; The action layer</span></p>
-          <h2>An <em>AI teammate</em> in every rep's pocket. The most intelligent action every visit.</h2>
+          <h2></h2>
         </div>
         <p>Raw data is noise. Wisy's Agents apply your business rules to every photo and surface the three highest-revenue actions before the rep leaves the aisle.</p>
       </div>
